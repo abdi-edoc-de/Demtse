@@ -6,28 +6,43 @@ using System.Threading.Tasks;
 using Demጽ.Repository.AdudioRepositories;
 using Demጽ.Repository.SubscribeReopsitories;
 using Demጽ.Repository.ChannelRepositories;
+using Demጽ.Repository.AuthenticationRepository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Demጽ.Entities;
 
 namespace Demጽ.Repository
 {
     public class WraperRepository : IWraperRepository
     {
-
+        private readonly UserManager<User> _userManger;
+        private readonly IConfiguration _configuration;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        
         private AppDbContext _appDbContext;
         private IAudioRepository _audioRepository;
-        private IChannelRepository _channelRepository { get; set; }
-        private ISubscribeRepository _subscribeRepository { get; set; }
+        private IChannelRepository _channelRepository;
+        private ISubscribeRepository _subscribeRepository;
+        private IAuthenticationRepository _authenticationRepository;
 
 
 
-        public WraperRepository(AppDbContext appDbContext)
+        public WraperRepository(AppDbContext appDbContext,
+            UserManager<User> userManager,
+            IConfiguration configuration,
+            RoleManager<IdentityRole> roleManager)
         {
             _appDbContext = appDbContext;
+            this._roleManager = roleManager;
+            this._userManger = userManager;
+            this._configuration = configuration;
 
         }
 
 
 
 
+       
 
 
         public IAudioRepository AudioRepository {
@@ -66,6 +81,18 @@ namespace Demጽ.Repository
             }
         }
 
-       
+        public IAuthenticationRepository AuthenticationRepository {
+            get
+            {
+                if (_authenticationRepository == null)
+                {
+                    _authenticationRepository = new AuthentiactionRepository(_userManger , _configuration,_roleManager);
+
+                }
+                return _authenticationRepository;
+            }
+
+        }
+
     }
 }

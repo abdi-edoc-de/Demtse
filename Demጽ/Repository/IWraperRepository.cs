@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Demጽ.Repository.AdudioRepositories;
+using Demጽ.Repository.AuthenticationRepository;
 using Demጽ.Repository.ChannelRepositories;
 using Demጽ.Repository.SubscribeReopsitories;
 
@@ -13,5 +14,6 @@ namespace Demጽ.Repository
         public IAudioRepository AudioRepository { get;  }
         public IChannelRepository  ChannelRepository { get;  }
         public ISubscribeRepository SubscribeRepository { get;  }
+        public IAuthenticationRepository AuthenticationRepository { get;  }
     }
 }

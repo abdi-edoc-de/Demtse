@@ -15,7 +15,7 @@ namespace Demጽ.Entities
         [Required]
         public bool Nofication { get; set; }
         [ForeignKey("UserID")]
-        public Users User { get; set; }
+        public User User { get; set; }
         public String UserId { get; set; }
         [ForeignKey("ChannelId")]
         public Channel Channel { get; set; }

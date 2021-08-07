@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Demጽ.Controllers
+namespace Demጽ.Models.Users
 {
-    public class RegisterModel
-
+    public class Register
     {
         public String Password { get; set; }
         public String Email { get; set; }
@@ -15,6 +17,5 @@ namespace Demጽ.Controllers
         public String LastName { get; set; }
         [Required]
         public String ProfilePicture { get; set; }
-
     }
 }

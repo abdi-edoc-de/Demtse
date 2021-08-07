@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demጽ.Entities
 {
-    public class Users:IdentityUser
+    public class User:IdentityUser
     {
         [Required]
         public String FirstName { get; set; }

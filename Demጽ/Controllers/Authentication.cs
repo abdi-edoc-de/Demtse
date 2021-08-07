@@ -1,5 +1,7 @@
 ﻿using Demጽ.DbContexts;
 using Demጽ.Entities;
+using Demጽ.Models.Users;
+using Demጽ.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,70 +16,62 @@ namespace Demጽ.Controllers
     [Route("api")]
     public class Authentication : Controller
     {
-        
-        private readonly AppDbContext _appDb;
-        private readonly UserManager<Users> _userManger;
+        private readonly IWraperRepository _repositry;
 
 
-        public Authentication(AppDbContext appDb, UserManager<Users> userManager)
+
+        public Authentication(IWraperRepository repository)
         {
-            this._appDb = appDb;
-            this._userManger = userManager;
+            this._repositry = repository;
+            
 
         }
-
-
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return Ok("hello world");
-        }
-
-
 
 
         [HttpPost]
-        [Route("Register")]
+        [Route("register")]
 
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] Register model)
         {
-            var userExist = await _userManger.FindByNameAsync(model.UserName);
-            if (userExist != null)
+            var userExist = await _repositry.AuthenticationRepository.Exist(model.UserName);
+            if (userExist)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new Response { Status = "500", Message = "UserName Taken" });
 
             }
-            Users user = new Users()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.UserName,
+
+
+            var user = new User() {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                ProfilePicture = model.ProfilePicture
-
+                Email = model.Email,
+                UserName = model.UserName,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ProfilePicture = model.ProfilePicture             
             };
 
+            var userFromRepo = await _repositry.AuthenticationRepository.Register(user,model.Password);
+           
+            return Ok(userFromRepo);
+               
+            
+        
+        }
+        [HttpPost]
+        [Route("login")]
 
-            var result = await _userManger.CreateAsync(user, model.Password);
+        public async Task<IActionResult> Login([FromBody] LoginDto model)
+        {
 
-
-
-            if (!result.Succeeded)
-
+            var userCred = await _repositry.AuthenticationRepository.Login(model);
+            if(userCred == null)
             {
-                var errors = result.Errors;
-                var message = string.Join(", ", result.Errors.Select(x => "Code " + x.Code + " Description" + x.Description));
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response
-                {
-                    Status = "500",
-                    Message = message
-                });
-
+                return NotFound();
             }
-            return Ok(user);
+
+            return Ok(userCred);
         }
 
-    }
+        }
 }

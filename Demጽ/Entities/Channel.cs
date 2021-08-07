@@ -20,7 +20,7 @@ namespace Demጽ.Entities
         [Required]
         public String ProfilePicture { get; set; }
         [ForeignKey("UserId")]
-        public Users Owner { get; set; }
+        public User Owner { get; set; }
         public String UserId { get; set; }
         public ICollection<Audio> Audios { get; set; } = new List<Audio>();
         public ICollection<Subscribe> Subscribtion { get; set; } = new List<Subscribe>();

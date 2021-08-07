@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Demጽ.DbContexts
 {
-    public class AppDbContext : IdentityDbContext<Users>
+    public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

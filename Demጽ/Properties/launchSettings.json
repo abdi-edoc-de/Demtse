@@ -1,13 +1,17 @@
-﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/Demጽ",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:57044",
       "sslPort": 0
     }
   },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
@@ -18,13 +22,12 @@
       }
     },
     "Demጽ": {
-      "commandName": "Project",
-      "launchBrowser": true,
+      "commandName": "IISExpress",
       "launchUrl": "weatherforecast",
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
