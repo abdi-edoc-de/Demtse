@@ -1,4 +1,5 @@
-﻿using Demጽ.Entities;
+﻿using AutoMapper;
+using Demጽ.Entities;
 using Demጽ.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -20,11 +21,14 @@ namespace Demጽ.Repository.AuthenticationRepository
         private readonly UserManager<User> _userManger;
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
 
         public AuthentiactionRepository(UserManager<User> userManager,
             IConfiguration configuration,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IMapper mapper)
         {
+            this._mapper = mapper;
             this._roleManager = roleManager;
             this._userManger = userManager;
             this._configuration = configuration;
@@ -63,12 +67,12 @@ namespace Demጽ.Repository.AuthenticationRepository
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
                     );
-             
+
                 return new LoginReturn()
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
                     Expiration = token.ValidTo,
-                    User = user
+                    User = _mapper.Map<UserDto>(user)
 
                 };
 

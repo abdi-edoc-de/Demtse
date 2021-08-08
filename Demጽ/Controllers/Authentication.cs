@@ -1,4 +1,5 @@
-﻿using Demጽ.DbContexts;
+﻿using AutoMapper;
+using Demጽ.DbContexts;
 using Demጽ.Entities;
 using Demጽ.Models.Users;
 using Demጽ.Repository;
@@ -18,11 +19,14 @@ namespace Demጽ.Controllers
     public class Authentication : Controller
     {
         private readonly IWraperRepository _repositry;
+        private readonly IMapper _mapper;
 
 
 
-        public Authentication(IWraperRepository repository)
+        public Authentication(IWraperRepository repository,
+            IMapper mapper)
         {
+            this._mapper = mapper;
             this._repositry = repository;
 
 
@@ -32,7 +36,7 @@ namespace Demጽ.Controllers
         [HttpPost]
         [Route("register")]
 
-        public async Task<IActionResult> Register([FromBody] Register model)
+        public async Task<IActionResult> Register([FromBody] UserCreationDto model)
         {
             var userExist = await _repositry.AuthenticationRepository.Exist(model.UserName);
             if (userExist)
@@ -43,19 +47,21 @@ namespace Demጽ.Controllers
             }
 
 
-            var user = new User()
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                UserName = model.UserName,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                ProfilePicture = model.ProfilePicture
-            };
+            //var user = new User()
+            //{
+            //    FirstName = model.FirstName,
+            //    LastName = model.LastName,
+            //    Email = model.Email,
+            //    UserName = model.UserName,
+            //    SecurityStamp = Guid.NewGuid().ToString(),
+            //    ProfilePicture = model.ProfilePicture
+            //};
+            User user = _mapper.Map<User>(model);
+            user.SecurityStamp = Guid.NewGuid().ToString();
 
             var userFromRepo = await _repositry.AuthenticationRepository.Register(user, model.Password);
-
-            return Ok(userFromRepo);
+            var userToReturn = _mapper.Map<UserDto>(userFromRepo);
+            return Ok(userToReturn);
 
 
 

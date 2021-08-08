@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Demጽ.Models.Users
 {
-    public class Register
+    public class UserCreationDto
     {
         public String Password { get; set; }
         public String Email { get; set; }

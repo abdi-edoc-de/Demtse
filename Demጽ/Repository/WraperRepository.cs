@@ -10,6 +10,7 @@ using Demጽ.Repository.AuthenticationRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Demጽ.Entities;
+using AutoMapper;
 
 namespace Demጽ.Repository
 {
@@ -18,6 +19,7 @@ namespace Demጽ.Repository
         private readonly UserManager<User> _userManger;
         private readonly IConfiguration _configuration;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
         
         private AppDbContext _appDbContext;
         private IAudioRepository _audioRepository;
@@ -30,9 +32,11 @@ namespace Demጽ.Repository
         public WraperRepository(AppDbContext appDbContext,
             UserManager<User> userManager,
             IConfiguration configuration,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IMapper mapper)
         {
-            _appDbContext = appDbContext;
+            this._mapper = mapper;
+           this._appDbContext = appDbContext;
             this._roleManager = roleManager;
             this._userManger = userManager;
             this._configuration = configuration;
@@ -86,7 +90,7 @@ namespace Demጽ.Repository
             {
                 if (_authenticationRepository == null)
                 {
-                    _authenticationRepository = new AuthentiactionRepository(_userManger , _configuration,_roleManager);
+                    _authenticationRepository = new AuthentiactionRepository(_userManger , _configuration,_roleManager,_mapper);
 
                 }
                 return _authenticationRepository;

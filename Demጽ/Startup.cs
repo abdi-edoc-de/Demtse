@@ -33,6 +33,7 @@ namespace Demጽ
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerGen();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IWraperRepository, WraperRepository>();
             services.AddControllers();
