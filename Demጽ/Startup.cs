@@ -32,6 +32,8 @@ namespace Demጽ
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen();
+
             services.AddScoped<IWraperRepository, WraperRepository>();
             services.AddControllers();
             services.AddDbContext<AppDbContext>(options =>
@@ -82,7 +84,14 @@ namespace Demጽ
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Demo API");
+                });
             }
+            
 
             app.UseHttpsRedirection();
 
