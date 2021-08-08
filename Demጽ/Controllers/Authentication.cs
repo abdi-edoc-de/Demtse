@@ -2,6 +2,7 @@
 using Demጽ.Entities;
 using Demጽ.Models.Users;
 using Demጽ.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace Demጽ.Controllers
         public Authentication(IWraperRepository repository)
         {
             this._repositry = repository;
-            
+
 
         }
 
@@ -42,21 +43,22 @@ namespace Demጽ.Controllers
             }
 
 
-            var user = new User() {
+            var user = new User()
+            {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.UserName,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                ProfilePicture = model.ProfilePicture             
+                ProfilePicture = model.ProfilePicture
             };
 
-            var userFromRepo = await _repositry.AuthenticationRepository.Register(user,model.Password);
-           
+            var userFromRepo = await _repositry.AuthenticationRepository.Register(user, model.Password);
+
             return Ok(userFromRepo);
-               
-            
-        
+
+
+
         }
         [HttpPost]
         [Route("login")]
@@ -65,13 +67,21 @@ namespace Demጽ.Controllers
         {
 
             var userCred = await _repositry.AuthenticationRepository.Login(model);
-            if(userCred == null)
+            if (userCred == null)
             {
                 return NotFound();
             }
 
             return Ok(userCred);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("checkroll")]
+
+        public async Task<IActionResult> Login()
+        {
+            return Ok("its working");
 
         }
+    }
 }
