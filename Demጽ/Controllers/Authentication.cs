@@ -80,7 +80,7 @@ namespace Demጽ.Controllers
 
             return Ok(userCred);
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         [HttpGet]
         [Route("checkroll")]
 
