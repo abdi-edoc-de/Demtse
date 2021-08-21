@@ -45,17 +45,6 @@ namespace Demጽ.Controllers
                     new Response { Status = "500", Message = "UserName Taken" });
 
             }
-
-
-            //var user = new User()
-            //{
-            //    FirstName = model.FirstName,
-            //    LastName = model.LastName,
-            //    Email = model.Email,
-            //    UserName = model.UserName,
-            //    SecurityStamp = Guid.NewGuid().ToString(),
-            //    ProfilePicture = model.ProfilePicture
-            //};
             User user = _mapper.Map<User>(model);
             user.SecurityStamp = Guid.NewGuid().ToString();
 
