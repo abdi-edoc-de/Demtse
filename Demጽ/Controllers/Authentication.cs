@@ -20,9 +20,6 @@ namespace Demጽ.Controllers
     {
         private readonly IWraperRepository _repositry;
         private readonly IMapper _mapper;
-
-
-
         public Authentication(IWraperRepository repository,
             IMapper mapper)
         {
@@ -41,29 +38,22 @@ namespace Demጽ.Controllers
             var userExist = await _repositry.AuthenticationRepository.Exist(model.UserName);
             if (userExist)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Response { Status = "500", Message = "UserName Taken" });
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "400", Message = "UserName Taken" });
 
             }
-
-
-            //var user = new User()
-            //{
-            //    FirstName = model.FirstName,
-            //    LastName = model.LastName,
-            //    Email = model.Email,
-            //    UserName = model.UserName,
-            //    SecurityStamp = Guid.NewGuid().ToString(),
-            //    ProfilePicture = model.ProfilePicture
-            //};
             User user = _mapper.Map<User>(model);
             user.SecurityStamp = Guid.NewGuid().ToString();
+            
 
             var userFromRepo = await _repositry.AuthenticationRepository.Register(user, model.Password);
+            if (userFromRepo == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "400", Message = "Password IS WEAK" });
+            }
             var userToReturn = _mapper.Map<UserDto>(userFromRepo);
             return Ok(userToReturn);
-
-
 
         }
         [HttpPost]
@@ -75,19 +65,13 @@ namespace Demጽ.Controllers
             var userCred = await _repositry.AuthenticationRepository.Login(model);
             if (userCred == null)
             {
-                return NotFound();
+                //ModelState.AddModelError("error", "Email or Password is Incorrect");
+                var map =new Dictionary<string, string>();
+                map["error"] = "Email or Password is Incorrect";
+                return BadRequest(map);
             }
-
             return Ok(userCred);
         }
-        [Authorize(Roles = "User")]
-        [HttpGet]
-        [Route("checkroll")]
-
-        public async Task<IActionResult> Login()
-        {
-            return Ok("its working");
-
-        }
+        
     }
 }

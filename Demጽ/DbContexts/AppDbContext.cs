@@ -1,6 +1,8 @@
 ﻿using Demጽ.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+//using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,15 @@ namespace Demጽ.DbContexts
 
             modelBuilder.Entity<Subscribe>()
                 .HasKey(c => new { c.UserId, c.ChannelId });
-        }
+           
+            
+            
+            
 
+
+
+
+
+        }
     }
 }

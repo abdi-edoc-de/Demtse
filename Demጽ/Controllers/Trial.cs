@@ -37,5 +37,13 @@ namespace Demጽ.Controllers
 
         
         }
+        [HttpGet("test")]
+        public async Task<ActionResult> Test()
+        {
+            return Ok("Test Test");
+
+
+
+        }
     }
 }

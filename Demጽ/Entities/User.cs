@@ -15,10 +15,11 @@ namespace Demጽ.Entities
         public String LastName { get; set; }
         [Required]
         public String ProfilePicture { get; set; }
-        public Channel Channel { get; set; }
+        //public Channel Channel { get; set; }
 
         public ICollection<Subscribe> Subscribtion { get; set; } 
             = new List<Subscribe>();
+        public List<Channel> Channels { get; set; } = new List<Channel>();
 
     }
 }

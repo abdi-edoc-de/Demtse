@@ -45,6 +45,7 @@ namespace Demጽ.Repository.AuthenticationRepository
         }
 
         public async Task<LoginReturn> Login(LoginDto userCred)
+
         {
             var user = await _userManger.FindByNameAsync(userName: userCred.UserName);
             if (user != null && await _userManger.CheckPasswordAsync(user, userCred.Password))
@@ -88,8 +89,7 @@ namespace Demጽ.Repository.AuthenticationRepository
             if (!result.Succeeded)
 
             {
-                throw new ArgumentNullException(nameof(User));
-
+                return null;
 
             }
 

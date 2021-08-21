@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210905172515_debug.cs" />
+    <Compile Remove="Migrations\20210905172515_debug.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />

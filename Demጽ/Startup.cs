@@ -41,6 +41,10 @@ namespace Demጽ
                                     options.UseSqlServer(Configuration
                                     .GetConnectionString("De" +
                                     "faultConnection")));
+            services.AddCors(options => options.AddPolicy("AllowEverything", builder => builder.AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -97,6 +101,7 @@ namespace Demጽ
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("AllowEverything");
 
             app.UseAuthentication();
 

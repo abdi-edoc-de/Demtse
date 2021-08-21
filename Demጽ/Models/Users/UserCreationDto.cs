@@ -8,8 +8,11 @@ namespace Demጽ.Models.Users
 {
     public class UserCreationDto
     {
+        [Required]
         public String Password { get; set; }
+        [Required]
         public String Email { get; set; }
+        [Required]
         public String UserName { get; set; }
         [Required]
         public String FirstName { get; set; }

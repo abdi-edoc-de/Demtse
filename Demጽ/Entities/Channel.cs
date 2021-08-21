@@ -19,8 +19,10 @@ namespace Demጽ.Entities
         public String Description { get; set; }
         [Required]
         public String ProfilePicture { get; set; }
-        [ForeignKey("UserId")]
+        [Required]
+        [ForeignKey(nameof(UserId))]
         public User Owner { get; set; }
+        [Required]
         public String UserId { get; set; }
         public ICollection<Audio> Audios { get; set; } = new List<Audio>();
         public ICollection<Subscribe> Subscribtion { get; set; } = new List<Subscribe>();
