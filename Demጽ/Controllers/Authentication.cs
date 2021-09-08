@@ -72,8 +72,7 @@ namespace Demጽ.Controllers
             }
 
 
-            // Channel entity = new Channel { Description = "channel 1", UserId = };
-            // var ch = _repositry.ChannelRepository.Add(entity);
+          
             
             return Ok(userCred);
         }

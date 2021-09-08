@@ -29,11 +29,26 @@ namespace Demጽ.Controllers
         [Route("subscribe")]
         public async Task<IActionResult> subscribe([FromBody] SubscriptionDto subscriptionDto)
         {
+            //return Ok("dfsa");            //var allSub = await _repositry.SubscribeRepository.GetAll();
+            //return Ok(allSub);
 
-            Subscribe subscribtion = _mapper.Map<Subscribe>(subscriptionDto);
 
-            var subs = await _repositry.SubscribeRepository.Add(subscribtion);
+            var s = await _repositry.SubscribeRepository.getSubscription(subscriptionDto.UserId, subscriptionDto.ChannelId);
+    
 
+            
+            //return Ok($"this is s {s}");
+            if (s != null)
+            {
+                var map = new Dictionary<string, string>();
+                map["error"] = "Already Subscribed";
+                return BadRequest(map);
+            }
+            var subscribtion = _mapper.Map<Subscribe>(subscriptionDto);
+            //return Ok(subscribtion);
+
+            var subs = await _repositry.SubscribeRepository.AddSubscription(subscribtion);
+            
 
             return Ok(subs);
 
@@ -46,6 +61,12 @@ namespace Demጽ.Controllers
         {
 
             var subscription = await _repositry.SubscribeRepository.getSubscription(UserID, channelID);
+            if (subscription == null)
+            {
+                var map = new Dictionary<string, string>();
+                map["error"] = "Not Subscribed";
+                return BadRequest(map);
+            }
             var result = await _repositry.SubscribeRepository.Delete(subscription.Id);
 
             return Ok(result);
@@ -53,7 +74,7 @@ namespace Demጽ.Controllers
 
         [HttpGet]
         [Route("isSubscribed")]
-        public async Task<IActionResult> IsSubscribed([FromBody] String UserId, String channelId)
+        public async Task<IActionResult> IsSubscribed(String UserId, String channelId)
         {
            
              

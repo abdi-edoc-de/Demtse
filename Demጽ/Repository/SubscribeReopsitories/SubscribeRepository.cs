@@ -1,5 +1,7 @@
 ﻿using Demጽ.DbContexts;
 using Demጽ.Entities;
+using Demጽ.Models.Subscription;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +26,17 @@ namespace Demጽ.Repository.SubscribeReopsitories
 
         public async Task<Subscribe> getSubscription(string UserId, string ChannelId)
         {
-            var result = await _appDbContext.FindAsync<Subscribe>(UserId = UserId, ChannelId = ChannelId);
-
-
+            var result = await _appDbContext.Subscribtions.FirstOrDefaultAsync(s => s.ChannelId == ChannelId && s.UserId == UserId);
 
             return result;
+        }
+
+        public async Task<Subscribe> AddSubscription(Subscribe subscribe)
+        {
+
+            var result = await _appDbContext.Subscribtions.AddAsync(subscribe);
+            await _appDbContext.SaveChangesAsync();
+            return (Subscribe)result;
         }
     }
 }

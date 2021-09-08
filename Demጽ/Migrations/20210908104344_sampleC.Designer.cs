@@ -4,14 +4,16 @@ using Demጽ.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Demጽ.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210908104344_sampleC")]
+    partial class sampleC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,14 +98,6 @@ namespace Demጽ.Migrations
                             Name = "Everything is Not Alive",
                             ProfilePicture = "So this should Not be a path to profile pics",
                             UserId = "2545b40c-004f-43a7-883d-336422040b17"
-                        },
-                        new
-                        {
-                            Id = "2ee49fe3-edf2-4f91-8409-3eb25ce6ca51",
-                            Description = "This is desc",
-                            Name = "Third Channel",
-                            ProfilePicture = "Selfie",
-                            UserId = "0581520d-52f6-4f56-af85-efd6a3ca79df"
                         });
                 });
 

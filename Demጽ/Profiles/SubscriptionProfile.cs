@@ -13,6 +13,8 @@ namespace Demጽ.Profiles
         public SubscriptionProfile()
         {
             CreateMap<SubscriptionDto, Subscribe>();
+            CreateMap<Subscribe, SubscriptionDto>();
+
         }
 
 

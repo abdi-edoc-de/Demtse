@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,5 +22,9 @@ namespace Demጽ.Entities
         public virtual Channel Channel { get; set; }
         public String ChannelId { get; set; }
 
+        //public static explicit operator Subscribe(EntityEntry<Subscribe> v)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
