@@ -59,7 +59,7 @@ namespace Demጽ.Controllers
             {
                 Name = formCollection["name"].ToString(),
                 Description = formCollection["description"].ToString(),
-                ProfilePicture = Path.Combine(Path.Join("Static"), Path.GetRandomFileName()),
+                ProfilePicture = Path.Combine(Path.Join("Static", "Resources", "Images", Path.GetRandomFileName())),
                 UserId = formCollection["ownerId"].ToString()
             };
 
@@ -172,7 +172,7 @@ namespace Demጽ.Controllers
                 Id = channel.Id,
                 Name = channel.Name,
                 Description = channel.Description,
-                OwnerId = channel.Owner.Id,
+                OwnerId = "channel.Owner.Id",
                 ProfilePicture = channel.ProfilePicture,
                 SubscribersNumber = "100" // TODO : read the data base and return number of subscribers
             };
