@@ -24,6 +24,7 @@ namespace Demጽ.Controllers
         }
 
         // GET api/channel/{id}
+        [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetChannel(String id)
         {
@@ -44,31 +45,28 @@ namespace Demጽ.Controllers
         }
 
         // POST api/channel
-        [Authorize(Roles = "Creator")]
+        // [Authorize(Roles = "Creator")]
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> PostChannel([FromBody] ChannelCreationDTO model, IFormFile file)
+        public async Task<ActionResult> PostChannel(IFormFile file, IFormCollection model)
         {
-            if (file == null)
+            if (file == null || model["name"].ToString().Equals("") || model["description"].ToString().Equals("") || model["ownerId"].ToString().Equals(""))
             {
-                return BadRequest("Make sure you have the file named file in form");
+                return BadRequest("Make sure you have String name, File file, String description, String ownerId fields  in the form");
             }
 
-            Channel channel = null;
-            try
+            // System.Console.WriteLine(file.Name);
+            // System.Console.WriteLine(model["name"]);
+            // System.Console.WriteLine(model["description"]);
+            // System.Console.WriteLine(model["ownerId"]);
+
+            Channel channel = new Channel
             {
-                channel = new Channel
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    ProfilePicture = Path.Combine(Path.Join("Static"), Path.GetRandomFileName()),
-                    UserId = model.OwnerId
-                };
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status406NotAcceptable);
-            }
+                Name = model["name"].ToString(),
+                Description = model["description"].ToString(),
+                ProfilePicture = Path.Combine(Path.Join("Static"), Path.GetRandomFileName()),
+                UserId = model["ownerId"].ToString()
+            };
 
             try
             {
