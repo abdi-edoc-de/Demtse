@@ -118,20 +118,15 @@ namespace Demጽ.Controllers
                 }
             }
 
-            var channel = new Channel
-            {
-                Id = channelFromDb.Id,
-                Name = formCollection["name"].ToString() ?? channelFromDb.Name,
-                Description = formCollection["description"].ToString() ?? channelFromDb.Description,
-                ProfilePicture = channelFromDb.ProfilePicture,
-                UserId = channelFromDb.UserId
-            };
+
+            channelFromDb.Name = formCollection["name"].ToString() ?? channelFromDb.Name;
+            channelFromDb.Description = formCollection["description"].ToString() ?? channelFromDb.Description;
 
             Channel updatedChannel = null;
 
             try
             {
-                updatedChannel = await _repository.ChannelRepository.Update(channel);
+                updatedChannel = await _repository.ChannelRepository.Update(channelFromDb);
             }
             catch (System.Exception)
             {
