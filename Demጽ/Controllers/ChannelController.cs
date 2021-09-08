@@ -48,24 +48,19 @@ namespace Demጽ.Controllers
         // [Authorize(Roles = "Creator")]
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> PostChannel(IFormFile file, IFormCollection model)
+        public async Task<ActionResult> PostChannel(IFormFile file, IFormCollection formCollection)
         {
-            if (file == null || model["name"].ToString().Equals("") || model["description"].ToString().Equals("") || model["ownerId"].ToString().Equals(""))
+            if (file == null || formCollection["name"].ToString().Equals("") || formCollection["description"].ToString().Equals("") || formCollection["ownerId"].ToString().Equals(""))
             {
                 return BadRequest("Make sure you have String name, File file, String description, String ownerId fields  in the form");
             }
 
-            // System.Console.WriteLine(file.Name);
-            // System.Console.WriteLine(model["name"]);
-            // System.Console.WriteLine(model["description"]);
-            // System.Console.WriteLine(model["ownerId"]);
-
             Channel channel = new Channel
             {
-                Name = model["name"].ToString(),
-                Description = model["description"].ToString(),
+                Name = formCollection["name"].ToString(),
+                Description = formCollection["description"].ToString(),
                 ProfilePicture = Path.Combine(Path.Join("Static"), Path.GetRandomFileName()),
-                UserId = model["ownerId"].ToString()
+                UserId = formCollection["ownerId"].ToString()
             };
 
             try
@@ -97,7 +92,7 @@ namespace Demጽ.Controllers
         // PUT api/channel/{id}
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> UpdateChannel(String id, [FromBody] ChannelCreationDTO model, IFormFile file)
+        public async Task<ActionResult> UpdateChannel(String id, IFormFile file, IFormCollection formCollection)
         {
 
             Channel channelFromDb = await _repository.ChannelRepository.Get(id);
@@ -125,8 +120,8 @@ namespace Demጽ.Controllers
             var channel = new Channel
             {
                 Id = channelFromDb.Id,
-                Name = model.Name ?? channelFromDb.Name,
-                Description = model.Description ?? channelFromDb.Description,
+                Name = formCollection["name"].ToString() ?? channelFromDb.Name,
+                Description = formCollection["description"].ToString() ?? channelFromDb.Description,
                 ProfilePicture = channelFromDb.ProfilePicture,
                 UserId = channelFromDb.UserId
             };
