@@ -19,16 +19,16 @@ namespace Demጽ.Profiles
                 )
                 .ForMember(
                 dest => dest.Name,
-                opt => opt.MapFrom(src => src.Title))
+                opt => opt.MapFrom(src => "pipip"))
                 .ForMember(
                 dest => dest.ChannelName,
                 opt => opt.MapFrom(src => "I don't know how to get this"))
                 .ForMember(
                 dest => dest.ImageUrl,
-                opt => opt.MapFrom(src => "https" + src.PosterPath))
+                opt => opt.MapFrom(src => "https"))
                 .ForMember(
                 dest => dest.Url,
-                opt => opt.MapFrom(src => "https" + src.Path))
+                opt => opt.MapFrom(src => "https"))
                 ;
         }
         

@@ -1,4 +1,5 @@
 ﻿using Demጽ.DbContexts;
+using Microsoft.EntityFrameworkCore;
 using Demጽ.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,25 @@ namespace Demጽ.Repository.AdudioRepositories
         public Task<List<Audio>> GetRecentAudios(Guid userId)
         {
             // TODO: Actual implementation of this
-            return GetAll();
+            return GetFirst(6);
         }
 
-        public Task<List<Audio>> GetSubscribedAudios(Guid userId)
+        public async Task<List<Audio>> GetSubscribedAudios(Guid userId)
         {
-            // TODO: Implment this too
-            return GetAll();
+            var listOfSubscriptions = _appDbContext.Subscribtions
+                .Where(sub => sub.UserId == userId.ToString())
+                .Include(sub => sub.Channel)
+                .ThenInclude(sub => sub.Audios.Take(5))
+                .ToList();
+            List<Audio> result = new List<Audio>();
+            listOfSubscriptions.ForEach(sub => result.AddRange(sub.Channel.Audios));
+            return result;
+                
+        }
+
+        public Task<List<Audio>> GetTrendingAudios()
+        {
+            return GetLast(6);
         }
     }
 }

@@ -53,7 +53,31 @@ namespace Demጽ.Repository
 
         public async Task<List<T>> GetAll()
         {
-            var entities = await _appDbContext.Set<T>().ToListAsync();
+            var entities = await _appDbContext.Set<T>()
+                .ToListAsync();
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+
+            }
+            return entities;
+        }
+        public async Task<List<T>> GetFirst(int count)
+        {
+            var entities = await _appDbContext.Set<T>().Take(count)
+                .ToListAsync();
+
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities));
+
+            }
+            return entities;
+        }
+        public async Task<List<T>> GetLast(int count)
+        {
+            var entities = await _appDbContext.Set<T>()
+                .ToListAsync();
             if (entities == null)
             {
                 throw new ArgumentNullException(nameof(entities));
