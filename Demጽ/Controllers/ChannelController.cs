@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Demጽ.Entities;
@@ -45,8 +46,14 @@ namespace Demጽ.Controllers
         // POST api/channel
         [Authorize(Roles = "Creator")]
         [HttpPost]
-        public async Task<ActionResult> PostChannel([FromBody] ChannelCreationDTO model)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> PostChannel([FromBody] ChannelCreationDTO model, IFormFile file)
         {
+            if (file == null)
+            {
+                return BadRequest("Make sure you have the file named file in form");
+            }
+
             Channel channel = null;
             try
             {
@@ -54,13 +61,25 @@ namespace Demጽ.Controllers
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    ProfilePicture = model.ProfilePicture,
+                    ProfilePicture = Path.Combine(Path.Join("Static"), Path.GetRandomFileName()),
                     UserId = model.OwnerId
                 };
             }
             catch (System.Exception)
             {
                 return StatusCode(StatusCodes.Status406NotAcceptable);
+            }
+
+            try
+            {
+                using (var stream = System.IO.File.Create(channel.ProfilePicture))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             Channel createdChannel = null;
