@@ -8,6 +8,7 @@ namespace Demጽ.Models.Users
 {
     public class UserDto
     {
+        public Guid Id { get; set; }
         public String Email { get; set; }
         public String UserName { get; set; }
         public String FirstName { get; set; }

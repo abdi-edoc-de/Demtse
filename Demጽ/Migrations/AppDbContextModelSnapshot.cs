@@ -37,7 +37,6 @@ namespace Demጽ.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PosterPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
