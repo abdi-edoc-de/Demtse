@@ -145,7 +145,15 @@ namespace Demጽ.Controllers
         [HttpGet("search/{searchString}")]
         public async Task<ActionResult> SearchChannel(String searchString)
         {
-            var channelsFromDb = from channel in (await _repository.ChannelRepository.GetAll()) where channel.Name.Contains(searchString) select channel;
+            IEnumerable<Channel> channelsFromDb = null;
+            try
+            {
+                channelsFromDb = from channel in (await _repository.ChannelRepository.GetAll()) where channel.Name.Contains(searchString) select channel;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
             if (channelsFromDb == null)
             {
