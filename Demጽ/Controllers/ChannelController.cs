@@ -24,7 +24,7 @@ namespace Demጽ.Controllers
         }
 
         // GET api/channel/{id}
-        [Authorize(Roles = "User")]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetChannel(String id)
         {
@@ -45,7 +45,7 @@ namespace Demጽ.Controllers
         }
 
         // POST api/channel
-        // [Authorize(Roles = "Creator")]
+        [Authorize]
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult> PostChannel(IFormFile file, IFormCollection formCollection)
@@ -90,6 +90,7 @@ namespace Demጽ.Controllers
         }
 
         // PUT api/channel/{id}
+        [Authorize]
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult> UpdateChannel(String id, IFormFile file, IFormCollection formCollection)
@@ -142,6 +143,7 @@ namespace Demጽ.Controllers
         }
 
         //Get api/channel/search/{searchString}
+        [Authorize]
         [HttpGet("search/{searchString}")]
         public async Task<ActionResult> SearchChannel(String searchString)
         {
