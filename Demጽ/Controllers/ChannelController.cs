@@ -98,7 +98,8 @@ namespace Demጽ.Controllers
 
         // PUT api/channel/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateChannel(String id, [FromBody] ChannelCreationDTO model)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> UpdateChannel(String id, [FromBody] ChannelCreationDTO model, IFormFile file)
         {
 
             Channel channelFromDb = await _repository.ChannelRepository.Get(id);
@@ -108,13 +109,28 @@ namespace Demጽ.Controllers
                 return NotFound();
             }
 
+            if (file != null)
+            {
+                try
+                {
+                    using (var stream = System.IO.File.OpenWrite(channelFromDb.ProfilePicture))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                catch (Exception)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
+
             var channel = new Channel
             {
-                Id = id,
-                Name = model.Name,
-                Description = model.Description,
-                ProfilePicture = model.ProfilePicture,
-                UserId = model.OwnerId
+                Id = channelFromDb.Id,
+                Name = model.Name ?? channelFromDb.Name,
+                Description = model.Description ?? channelFromDb.Description,
+                ProfilePicture = channelFromDb.ProfilePicture,
+                UserId = channelFromDb.UserId
             };
 
             Channel updatedChannel = null;
