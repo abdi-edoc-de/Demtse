@@ -13,5 +13,22 @@ namespace Demጽ.Repository.SubscribeReopsitories
     public SubscribeRepository(AppDbContext appDbContext) : base(appDbContext)
     {
     }
-}
+
+        //public async Task<Subscribe> addSubscription(string UserId, string ChannelId)
+        //{
+        //    var result = await _appDbContext.AddAsync<Subscribe>(UserId);
+
+
+        //    return result;
+        //}
+
+        public async Task<Subscribe> getSubscription(string UserId, string ChannelId)
+        {
+            var result = await _appDbContext.FindAsync<Subscribe>(UserId = UserId, ChannelId = ChannelId);
+
+
+
+            return result;
+        }
+    }
 }

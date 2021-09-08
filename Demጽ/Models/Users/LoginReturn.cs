@@ -10,5 +10,6 @@ namespace Demጽ.Models.Users
         public String Token { get; set; }
         public DateTime Expiration { get; set; }
         public UserDto User { get; set; }
+        
     }
 }
