@@ -17,9 +17,9 @@ namespace Demጽ.Entities
         public String ProfilePicture { get; set; }
         //public Channel Channel { get; set; }
 
-        public ICollection<Subscribe> Subscribtion { get; set; } 
+        public virtual ICollection<Subscribe> Subscribtion { get; set; } 
             = new List<Subscribe>();
-        public List<Channel> Channels { get; set; } = new List<Channel>();
+        public virtual List<Channel> Channels { get; set; } = new List<Channel>();
 
     }
 }

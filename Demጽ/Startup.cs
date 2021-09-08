@@ -1,6 +1,8 @@
 using Demጽ.DbContexts;
 using Demጽ.Entities;
 using Demጽ.Repository;
+using Demጽ.Repository.AdudioRepositories;
+using Demጽ.Repository.ChannelRepositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,9 +38,13 @@ namespace Demጽ
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IWraperRepository, WraperRepository>();
+            services.AddScoped<IAudioRepository, AudioRepository>();
+            services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddControllers();
-            services.AddDbContext<AppDbContext>(options =>
-                                    options.UseSqlServer(Configuration
+            services.AddDbContext<AppDbContext>(options => 
+                                    options
+                                    .UseLazyLoadingProxies()
+                                    .UseSqlServer(Configuration
                                     .GetConnectionString("De" +
                                     "faultConnection")));
             services.AddCors(options => options.AddPolicy("AllowEverything", builder => builder.AllowAnyMethod()

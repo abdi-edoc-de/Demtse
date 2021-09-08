@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210905172515_debug.cs" />
     <Compile Remove="Migrations\20210905172515_debug.Designer.cs" />
+    <Compile Remove="Migrations\20210908032749_return_channel.cs" />
+    <Compile Remove="Migrations\20210908032749_return_channel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,6 +16,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.17" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.17" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.17">
       <PrivateAssets>all</PrivateAssets>
@@ -24,6 +28,8 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
+    <Folder Include="Static\Resources\Audios\" />
+    <Folder Include="Static\Resources\Images\" />
   </ItemGroup>
 
 

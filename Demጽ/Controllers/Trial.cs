@@ -26,10 +26,8 @@ namespace Demጽ.Controllers
         {
             Audio audioForEntity = new Audio()
             {
-                Path = audio.Path,
                 Title = audio.Title,
-                Description = audio.Description,
-                PosterPath = audio.PosterPath
+                Description = audio.Description
             };
             await _repositry.AudioRepository.Add(audioForEntity);
             return Ok(audioForEntity);
