@@ -14,7 +14,7 @@ namespace Demጽ.Entities
         public String Id { get; set; }
 
         [ForeignKey("ChannelId")]
-        public Channel Channel { get; set; }
+        public virtual Channel Channel { get; set; }
         public String ChannelId { get; set; }
 
         [Required]
@@ -24,7 +24,6 @@ namespace Demጽ.Entities
         public String Description { get; set; }
         [Required]
         public String Path { get; set; }
-        [Required]
         public String PosterPath { get; set; }
 
     }
