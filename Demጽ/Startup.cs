@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Demጽ.Profiles;
 using Demጽ.Repository.RecentlyPlayedRespositories;
+using Demጽ.Repository.SubscribeReopsitories;
 
 namespace Demጽ
 {
@@ -43,6 +44,7 @@ namespace Demጽ
             services.AddScoped<IAudioRepository, AudioRepository>();
             services.AddScoped<IChannelRepository, ChannelRepository>();
             services.AddScoped<IRecentlyPlayedRepository, RecentlyPlayedRepository>();
+            services.AddScoped<ISubscribeRepository, SubscribeRepository>();
             services.AddControllers();
             services.AddDbContext<AppDbContext>(options => 
                                     options

@@ -14,7 +14,7 @@ namespace Demጽ.Entities
         public String Id { get; set; }
         [Required]
         public bool Nofication { get; set; }
-        [ForeignKey("UserID")]
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public String UserId { get; set; }
         [ForeignKey("ChannelId")]
