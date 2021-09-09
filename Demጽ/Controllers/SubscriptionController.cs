@@ -48,6 +48,17 @@ namespace Demጽ.Controllers
                 .ConvertAll(channel => ConvertToChannelDto(channel));
         }
 
+        [HttpGet("{ChannelId}")]
+        public async Task<ActionResult> GetSubscription(Guid UserId, Guid ChannelId)
+        {
+            var result = await _SubscriptionRepository.GetSubscribe(UserId.ToString(), ChannelId.ToString());
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
         public ChannelDto ConvertToChannelDto(Channel channel)
         {
             return new ChannelDto

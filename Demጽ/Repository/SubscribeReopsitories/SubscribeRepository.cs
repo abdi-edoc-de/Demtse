@@ -22,6 +22,11 @@ namespace Demጽ.Repository.SubscribeReopsitories
             await _appDbContext.SaveChangesAsync();
         }
 
+        public async Task<Subscribe> GetSubscribe(string userId, string channelId)
+        {
+            return await _appDbContext.Subscribtions.Where(sub => sub.UserId == userId && sub.ChannelId == channelId).FirstOrDefaultAsync();
+        }
+
         public async Task<List<Channel>> GetSubscribedChannels(string userId)
         {
             return (await _appDbContext.Subscribtions
