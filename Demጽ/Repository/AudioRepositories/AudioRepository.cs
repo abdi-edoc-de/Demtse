@@ -20,6 +20,15 @@ namespace Demጽ.Repository.AdudioRepositories
             return Add(audio);
         }
 
+        public async Task<Audio> IncrementListeners(Audio audio)
+        {
+            _appDbContext.Audios
+                .Update(audio);
+            audio.NumberOfListeners++;
+            await _appDbContext.SaveChangesAsync();
+            return audio;
+        }
+
         public Task<Audio> DeleteResource(Guid resourceId)
         {
             return Delete(resourceId.ToString());
@@ -41,17 +50,27 @@ namespace Demጽ.Repository.AdudioRepositories
             var listOfSubscriptions = _appDbContext.Subscribtions
                 .Where(sub => sub.UserId == userId.ToString())
                 .Include(sub => sub.Channel)
-                .ThenInclude(sub => sub.Audios.Take(5))
+                .ThenInclude(sub => sub.Audios
+                    .OrderBy(audio => audio.UploadedDate)
+                    .Take(5)
+                )
                 .ToList();
             List<Audio> result = new List<Audio>();
             listOfSubscriptions.ForEach(sub => result.AddRange(sub.Channel.Audios));
-            return result;
-                
+            return result; 
         }
 
         public Task<List<Audio>> GetTrendingAudios()
         {
             return GetLast(6);
+        }
+
+        public async Task<bool> DeleteAudiosOfChannel(String channelId)
+        {
+            var allAudios = await _appDbContext.Audios.Where(audio => audio.ChannelId == channelId).ToArrayAsync();
+            _appDbContext.Audios.RemoveRange(allAudios);
+            await _appDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

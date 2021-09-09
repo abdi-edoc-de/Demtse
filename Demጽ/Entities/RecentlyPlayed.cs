@@ -13,6 +13,9 @@ namespace Demጽ.Entities
         [Key]
         public String Id { get; set; }
 
+        [ForeignKey("AudioId")]
+        public virtual Audio Audio { get; set; }
+
         [Required]
         public String AudioId { get; set; }
 

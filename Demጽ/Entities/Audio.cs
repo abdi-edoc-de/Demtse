@@ -29,5 +29,8 @@ namespace Demጽ.Entities
         [Required]
         public int NumberOfListeners { get; set; }
 
+        [Required]
+        public DateTime UploadedDate { get; set; }
+
     }
 }

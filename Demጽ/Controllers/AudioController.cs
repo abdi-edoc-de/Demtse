@@ -68,9 +68,10 @@ namespace Demጽ.Controllers
                 Path = Path.Combine(pathForFiles, "Audios", Path.GetRandomFileName()),
                 Title = audioCreationDto.Title,
                 Description = audioCreationDto.Description,
-                PosterPath = Path.Combine(pathForFiles, "Images", Path.GetRandomFileName()),
+                PosterPath = channel.ProfilePicture,
                 ChannelId = channel.Id,
                 NumberOfListeners = 0,
+                UploadedDate = DateTime.Now
             };
 
             using (var stream = System.IO.File.Create(audio.Path))
@@ -84,6 +85,23 @@ namespace Demጽ.Controllers
             AudioDto audioDto = ConvertToDto(audio, UserId.ToString());
             // AudioDto audioToReturn = _mapper.Map<AudioDto>(audio);
             return Ok(audioDto);
+        }
+
+        [HttpPatch("{AudioId}")]
+        public async Task<ActionResult<Audio>> EditResource(Guid UserId, Guid AudioId, [FromBody] AudioUpdateDto audioUpdateDto)
+        {
+            var audio = await _AudioRepository.Get(AudioId.ToString());
+            if (audio == null)
+            {
+                return NotFound();
+            } else if (audio.Channel.UserId != UserId.ToString())
+            {
+                return Unauthorized();
+            }
+            audio.Title = audioUpdateDto.Title;
+            audio.Description = audioUpdateDto.Description;
+            await _AudioRepository.Update(audio);
+            return Accepted(audio);
         }
 
         [HttpGet("{AudioId}/Download.mp3")]
@@ -103,35 +121,35 @@ namespace Demጽ.Controllers
         public async Task<ActionResult<List<AudioDto>>> GetSubscribedAudios(Guid UserId)
         {
             List<Audio> result = await _AudioRepository.GetSubscribedAudios(UserId);
-            return result.ConvertAll(audio => ConvertToDto(audio, UserId.ToString()));
+            return Ok(result.ConvertAll(audio => ConvertToDto(audio, UserId.ToString())));
         }
 
         [HttpGet("Trending")]
         public async Task<ActionResult<List<AudioDto>>> GetTrendingAudios(Guid UserId)
         {
             List<Audio> result = await _AudioRepository.GetTrendingAudios();
-            return result.ConvertAll(audio => ConvertToDto(audio, UserId.ToString()));
+            return Ok(result.ConvertAll(audio => ConvertToDto(audio, UserId.ToString())));
         }
 
         [HttpPost("{AudioId}/Played")]
         public async Task<ActionResult<RecentlyPlayed>> PostRecentlyPlayed(Guid UserId, Guid AudioId)
         {
-            // await _RecentlyPlayedRepository.DeleteAll();
             var result = await _RecentlyPlayedRepository.Add(new RecentlyPlayed
             {
                 AudioId = AudioId.ToString(),
                 UserId = UserId.ToString(),
                 ListenTime = DateTime.Now
             });
+            await _AudioRepository.IncrementListeners(result.Audio);
             return Accepted(result);
         } 
 
         [HttpGet("Recents")]
-        public async Task<ActionResult<List<RecentlyPlayed>>> GetRecentlyPlayed(Guid UserId)
+        public async Task<ActionResult<List<AudioDto>>> GetRecentlyPlayed(Guid UserId)
         {
             var results =  await _RecentlyPlayedRepository.GetAll();
             
-            return Ok(results);
+            return Ok(results.ConvertAll(result => ConvertToDto(result.Audio, UserId.ToString())));
         }
 
         [HttpDelete("{AudioId}")]
@@ -176,12 +194,12 @@ namespace Demጽ.Controllers
             return new AudioDto
             {
                 Name = audio.Title,
-                NumberOfListeners = 123,
+                NumberOfListeners = audio.NumberOfListeners,
                 ChannelName = audio.Channel.Name,
-                Url = "http://localhost:44343/api/Users/" + UserId + "/Audios/" + audio.Id,
+                Url = "http://localhost:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
                 Description = audio.Description,
                 Id = Guid.Parse(audio.Id),
-                ImageUrl = ""
+                ImageUrl = audio.Channel.ProfilePicture,
             };
         }
 
