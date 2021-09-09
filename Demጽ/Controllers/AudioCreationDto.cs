@@ -11,6 +11,7 @@ namespace Demጽ.Controllers
         public String Title { get; set; }
         [Required]
         public String Description { get; set; }
+        [Required]
         public Guid ChannelId { get; set; }
     }
 }

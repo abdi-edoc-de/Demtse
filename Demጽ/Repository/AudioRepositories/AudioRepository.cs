@@ -50,13 +50,12 @@ namespace Demጽ.Repository.AdudioRepositories
             var listOfSubscriptions = _appDbContext.Subscribtions
                 .Where(sub => sub.UserId == userId.ToString())
                 .Include(sub => sub.Channel)
-                .ThenInclude(sub => sub.Audios
-                    .OrderBy(audio => audio.UploadedDate)
-                    .Take(5)
-                )
+                .ThenInclude(sub => sub.Audios)
+                .Take(10)
                 .ToList();
             List<Audio> result = new List<Audio>();
             listOfSubscriptions.ForEach(sub => result.AddRange(sub.Channel.Audios));
+            result.OrderBy(audio => audio.UploadedDate);
             return result; 
         }
 

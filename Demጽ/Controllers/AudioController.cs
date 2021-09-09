@@ -176,16 +176,8 @@ namespace Demጽ.Controllers
             {
                 return NotFound();
             }
-            AudioDto audioDto = new AudioDto
-            {
-                Name = audio.Title,
-                NumberOfListeners = 123,
-                ChannelName = audio.Channel.Name,
-                Url = "http://localhost:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
-                Description = audio.Description,
-                Id = Guid.Parse(audio.Id),
-                ImageUrl = ""
-            };
+            AudioDto audioDto = ConvertToDto(audio, UserId.ToString());
+            Console.WriteLine(audioDto.Url);
             return Ok(audioDto);
         }
 
@@ -196,7 +188,7 @@ namespace Demጽ.Controllers
                 Name = audio.Title,
                 NumberOfListeners = audio.NumberOfListeners,
                 ChannelName = audio.Channel.Name,
-                Url = "http://localhost:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
+                Url = "http://192.168.43.110:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
                 Description = audio.Description,
                 Id = Guid.Parse(audio.Id),
                 ImageUrl = audio.Channel.ProfilePicture,
