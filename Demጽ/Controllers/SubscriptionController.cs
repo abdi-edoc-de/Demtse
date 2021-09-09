@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Demጽ.Repository.SubscribeReopsitories;
 using Demጽ.Models.Channels;
 using Demጽ.Entities;
+using Demጽ.Models.Audios;
 
 namespace Demጽ.Controllers
 {
@@ -45,7 +46,7 @@ namespace Demጽ.Controllers
         public async Task<ActionResult<List<ChannelDto>>> GetSubscribedChannels(Guid UserId)
         {
             return (await _SubscriptionRepository.GetSubscribedChannels(UserId.ToString()))
-                .ConvertAll(channel => ConvertToChannelDto(channel));
+                .ConvertAll(channel => ConvertToChannelDto(channel, UserId.ToString()));
         }
 
         [HttpGet("{ChannelId}")]
@@ -59,15 +60,30 @@ namespace Demጽ.Controllers
             return Ok();
         }
 
-        public ChannelDto ConvertToChannelDto(Channel channel)
+        public ChannelDto ConvertToChannelDto(Channel channel, String userId)
         {
             return new ChannelDto
             {
                 Id = channel.Id,
                 Name = channel.Name,
-                ImageUrl = channel.ProfilePicture,
+                Url = channel.ProfilePicture,
                 Description = channel.Description,
-                Subscribers = channel.Subscribtion.Count()
+                Subscribers = channel.Subscribtion.Count(),
+                Podcasts = channel.Audios.ToList().ConvertAll(audio => ConvertToAudioDto(audio, userId)),
+            };
+        }
+
+        private AudioDto ConvertToAudioDto(Audio audio, String UserId)
+        {
+            return new AudioDto
+            {
+                Name = audio.Title,
+                NumberOfListeners = audio.NumberOfListeners,
+                ChannelName = audio.Channel.Name,
+                Url = "http://192.168.43.110:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
+                Description = audio.Description,
+                Id = Guid.Parse(audio.Id),
+                ImageUrl = audio.Channel.ProfilePicture,
             };
         }
     }
