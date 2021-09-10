@@ -10,7 +10,7 @@ namespace Demጽ.Repository.AuthenticationRepository
     public interface IAuthenticationRepository
     {
         Task<User> Register(User user,string Password);
-        Task<User> RegisterAdmin(User user , string Password)
+        Task<User> RegisterAdmin(User user, string Password);
         Task<LoginReturn> Login(LoginDto userCred);
         Task<bool> Exist(string userName);
 
