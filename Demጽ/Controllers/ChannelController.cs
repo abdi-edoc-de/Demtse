@@ -195,6 +195,7 @@ namespace Demጽ.Controllers
                 Podcasts = channel.Audios.ToList().ConvertAll(audio => AudioController.ConvertToAudioDto(audio, userId)),
             };
         }
+
         [HttpGet]
         [Route("/profile/{channelId}")]
         public async Task<ActionResult> GetProfile(String userId,String channelId)

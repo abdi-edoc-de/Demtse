@@ -145,7 +145,7 @@ namespace Demጽ.Controllers
             return Accepted(result);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("Recents")]
         public async Task<ActionResult<List<AudioDto>>> GetRecentlyPlayed(Guid UserId)
         {
@@ -170,7 +170,7 @@ namespace Demጽ.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{AudioId}")]
         public async Task<ActionResult<AudioDto>> GetResource(Guid UserId, Guid AudioId)
         {
