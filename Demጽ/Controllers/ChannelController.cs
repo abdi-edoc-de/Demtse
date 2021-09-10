@@ -159,6 +159,25 @@ namespace Demጽ.Controllers
             }
             return Ok(ToDTOs(channelsFromDb, UserId.ToString()));
         }
+        [Authorize]
+        [HttpGet("yourchannel/users/{userId}")]
+        public async Task<ActionResult> yourChannels(String userId){
+            IEnumerable<Channel> channelsFromDb = null;
+            try
+            {
+                channelsFromDb = from channel in (await _repository.ChannelRepository.GetAll()) where channel.UserId.Equals(userId) select channel;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            if (channelsFromDb == null)
+            {
+                return NotFound();
+            }
+            return Ok(ToDTOs(channelsFromDb));
+        }
 
         public static ChannelDto ConvertToChannelDto(Channel channel, String userId)
         {
