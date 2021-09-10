@@ -47,12 +47,12 @@ namespace Demጽ.Repository.AdudioRepositories
 
         public async Task<List<Audio>> GetSubscribedAudios(Guid userId)
         {
-            var listOfSubscriptions = _appDbContext.Subscribtions
+            var listOfSubscriptions = await _appDbContext.Subscribtions
                 .Where(sub => sub.UserId == userId.ToString())
                 .Include(sub => sub.Channel)
                 .ThenInclude(sub => sub.Audios)
                 .Take(10)
-                .ToList();
+                .ToListAsync();
             List<Audio> result = new List<Audio>();
             listOfSubscriptions.ForEach(sub => result.AddRange(sub.Channel.Audios));
             result.OrderBy(audio => audio.UploadedDate);
@@ -74,7 +74,7 @@ namespace Demጽ.Repository.AdudioRepositories
 
         public async Task<List<Audio>> TextSearchPodcasts(String query)
         {
-            return _appDbContext.Audios.Where(audio => audio.Title.Contains(query)).ToList();
+            return await _appDbContext.Audios.Where(audio => audio.Title.Contains(query)).ToListAsync();
         }
     }
 }

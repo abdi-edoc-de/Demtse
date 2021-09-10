@@ -24,6 +24,13 @@ namespace Demጽ.Controllers
             _repository = repository;
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<ChannelDto>> GetListOfChannels(Guid UserId)
+        {
+            return Ok((await _repository.ChannelRepository.GetAll()).ConvertAll(channel => ConvertToChannelDto(channel, UserId.ToString())));
+        }
+
         // GET api/channel/{id}
         //[Authorize]
         [HttpGet("{id}")]

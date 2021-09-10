@@ -4,6 +4,7 @@ using Demጽ.Models.Audios;
 using Demጽ.Repository.AdudioRepositories;
 using Demጽ.Repository.ChannelRepositories;
 using Demጽ.Repository.RecentlyPlayedRespositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,7 +22,6 @@ namespace Demጽ.Controllers
     {
         private readonly string pathForFiles = Path.Join("Static", "Resources");
         private readonly IAudioRepository _AudioRepository;
-        private readonly IMapper _mapper;
         private readonly IRecentlyPlayedRepository _RecentlyPlayedRepository;
         private readonly IChannelRepository _ChannelRepository;
 
@@ -88,7 +88,7 @@ namespace Demጽ.Controllers
         }
 
         [HttpPatch("{AudioId}")]
-        public async Task<ActionResult<Audio>> EditResource(Guid UserId, Guid AudioId, [FromBody] AudioUpdateDto audioUpdateDto)
+        public async Task<ActionResult<AudioDto>> EditResource(Guid UserId, Guid AudioId, [FromBody] AudioUpdateDto audioUpdateDto)
         {
             var audio = await _AudioRepository.Get(AudioId.ToString());
             if (audio == null)
@@ -101,7 +101,7 @@ namespace Demጽ.Controllers
             audio.Title = audioUpdateDto.Title;
             audio.Description = audioUpdateDto.Description;
             await _AudioRepository.Update(audio);
-            return Accepted(audio);
+            return Accepted(ConvertToAudioDto(audio, UserId.ToString()));
         }
 
         [HttpGet("{AudioId}/Download.mp3")]
@@ -124,6 +124,7 @@ namespace Demጽ.Controllers
             return Ok(result.ConvertAll(audio => ConvertToAudioDto(audio, UserId.ToString())));
         }
 
+        [Authorize]
         [HttpGet("Trending")]
         public async Task<ActionResult<List<AudioDto>>> GetTrendingAudios(Guid UserId)
         {
@@ -142,8 +143,9 @@ namespace Demጽ.Controllers
             });
             await _AudioRepository.IncrementListeners(result.Audio);
             return Accepted(result);
-        } 
+        }
 
+        [Authorize]
         [HttpGet("Recents")]
         public async Task<ActionResult<List<AudioDto>>> GetRecentlyPlayed(Guid UserId)
         {
@@ -168,6 +170,7 @@ namespace Demጽ.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet("{AudioId}")]
         public async Task<ActionResult<AudioDto>> GetResource(Guid UserId, Guid AudioId)
         {
