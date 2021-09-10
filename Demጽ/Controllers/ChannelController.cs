@@ -160,8 +160,9 @@ namespace Demጽ.Controllers
             return Ok(ToDTOs(channelsFromDb, UserId.ToString()));
         }
         [Authorize]
-        [HttpGet("yourchannel/users/{userId}")]
-        public async Task<ActionResult> yourChannels(String userId){
+        [HttpGet("yourchannel")]
+        public async Task<ActionResult> yourChannels(Guid UserId){
+            String userId = UserId.ToString();
             IEnumerable<Channel> channelsFromDb = null;
             try
             {
@@ -176,7 +177,7 @@ namespace Demጽ.Controllers
             {
                 return NotFound();
             }
-            return Ok(ToDTOs(channelsFromDb));
+            return Ok(ToDTOs(channelsFromDb, userId));
         }
 
         public static ChannelDto ConvertToChannelDto(Channel channel, String userId)
