@@ -12,7 +12,7 @@ namespace Demጽ.Repository.AdudioRepositories
         public Task<Audio> AddAudio(Audio audio);
         public Task<Audio> GetAudio(Guid audioId);
 
-        public Task<Audio> IncrementListeners(Audio audio);
+        public Task<Audio> IncrementListeners(Guid audioId);
         public Task<List<Audio>> GetRecentAudios(Guid userId);
         public Task<List<Audio>> GetSubscribedAudios(Guid userId);
         public Task<List<Audio>> GetTrendingAudios();

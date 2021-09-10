@@ -20,13 +20,13 @@ namespace Demጽ.Repository.AdudioRepositories
             return Add(audio);
         }
 
-        public async Task<Audio> IncrementListeners(Audio audio)
+        public async Task<Audio> IncrementListeners(Guid audioId)
         {
-            _appDbContext.Audios
-                .Update(audio);
-            audio.NumberOfListeners++;
+            var result = await _appDbContext.Audios.Where(audio => audio.Id == audioId.ToString()).FirstAsync();
+            _appDbContext.Audios.Update(result);
+            result.NumberOfListeners++;
             await _appDbContext.SaveChangesAsync();
-            return audio;
+            return result;
         }
 
         public Task<Audio> DeleteResource(Guid resourceId)
