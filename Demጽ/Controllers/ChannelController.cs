@@ -24,7 +24,7 @@ namespace Demጽ.Controllers
             _repository = repository;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<ChannelDto>> GetListOfChannels(Guid UserId)
         {

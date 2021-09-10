@@ -52,16 +52,7 @@ namespace Demጽ.Controllers
                 return BadRequest("Make sure you have the file is named file in the form");
             }
 
-            Channel channel = new Channel
-            {
-                Name = "Everything is Alive",
-                Description = "This is a cool podcast where we interview inanimate objects",
-                ProfilePicture = "So this should be a path to profile pics",
-                UserId = UserId.ToString(),
-
-            };
-
-            await _ChannelRepository.Add(channel);
+            Channel channel = await _ChannelRepository.Get(audioCreationDto.ChannelId.ToString());
 
             Audio audio = new Audio
             {
