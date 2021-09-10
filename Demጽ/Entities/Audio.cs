@@ -26,5 +26,11 @@ namespace Demጽ.Entities
         public String Path { get; set; }
         public String PosterPath { get; set; }
 
+        [Required]
+        public int NumberOfListeners { get; set; }
+
+        [Required]
+        public DateTime UploadedDate { get; set; }
+
     }
 }

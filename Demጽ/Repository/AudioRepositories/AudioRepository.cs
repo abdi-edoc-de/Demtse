@@ -1,4 +1,5 @@
 ﻿using Demጽ.DbContexts;
+using Microsoft.EntityFrameworkCore;
 using Demጽ.Entities;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,15 @@ namespace Demጽ.Repository.AdudioRepositories
             return Add(audio);
         }
 
+        public async Task<Audio> IncrementListeners(Audio audio)
+        {
+            _appDbContext.Audios
+                .Update(audio);
+            audio.NumberOfListeners++;
+            await _appDbContext.SaveChangesAsync();
+            return audio;
+        }
+
         public Task<Audio> DeleteResource(Guid resourceId)
         {
             return Delete(resourceId.ToString());
@@ -32,13 +42,34 @@ namespace Demጽ.Repository.AdudioRepositories
         public Task<List<Audio>> GetRecentAudios(Guid userId)
         {
             // TODO: Actual implementation of this
-            return GetAll();
+            return GetFirst(6);
         }
 
-        public Task<List<Audio>> GetSubscribedAudios(Guid userId)
+        public async Task<List<Audio>> GetSubscribedAudios(Guid userId)
         {
-            // TODO: Implment this too
-            return GetAll();
+            var listOfSubscriptions = _appDbContext.Subscribtions
+                .Where(sub => sub.UserId == userId.ToString())
+                .Include(sub => sub.Channel)
+                .ThenInclude(sub => sub.Audios)
+                .Take(10)
+                .ToList();
+            List<Audio> result = new List<Audio>();
+            listOfSubscriptions.ForEach(sub => result.AddRange(sub.Channel.Audios));
+            result.OrderBy(audio => audio.UploadedDate);
+            return result; 
+        }
+
+        public Task<List<Audio>> GetTrendingAudios()
+        {
+            return GetLast(6);
+        }
+
+        public async Task<bool> DeleteAudiosOfChannel(String channelId)
+        {
+            var allAudios = await _appDbContext.Audios.Where(audio => audio.ChannelId == channelId).ToArrayAsync();
+            _appDbContext.Audios.RemoveRange(allAudios);
+            await _appDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

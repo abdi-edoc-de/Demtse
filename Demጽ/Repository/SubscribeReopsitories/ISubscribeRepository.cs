@@ -9,5 +9,10 @@ namespace Demጽ.Repository.SubscribeReopsitories
 {
     public interface ISubscribeRepository : IRepository<Subscribe>
     {
+        public Task<List<Channel>> GetSubscribedChannels(String userId);
+
+        public Task DeleteSubscription(String userId, String channelId);
+
+        public Task<Subscribe> GetSubscribe(String userId, String channelId);
     }
 }

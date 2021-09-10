@@ -20,6 +20,8 @@ namespace Demጽ.DbContexts
         public DbSet<Audio> Audios { get; set; }
         public DbSet<Subscribe> Subscribtions { get; set; }
 
+        public DbSet<RecentlyPlayed> RecentlyPlayeds { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

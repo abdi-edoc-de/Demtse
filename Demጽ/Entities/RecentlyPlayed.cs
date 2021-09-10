@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 
 namespace Demጽ.Entities
 {
-    public class Subscribe
+    public class RecentlyPlayed
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public String Id { get; set; }
-        [Required]
-        public bool Nofication { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
-        public String UserId { get; set; }
-        [ForeignKey("ChannelId")]
-        public virtual Channel Channel { get; set; }
-        public String ChannelId { get; set; }
 
+        [ForeignKey("AudioId")]
+        public virtual Audio Audio { get; set; }
+
+        [Required]
+        public String AudioId { get; set; }
+
+        [Required]
+        public String UserId { get; set; }
+
+        [Required]
+        public DateTime ListenTime { get; set; }
     }
 }

@@ -33,39 +33,11 @@ namespace Demጽ.Repository.AuthenticationRepository
             this._userManger = userManager;
             this._configuration = configuration;
         }
-
-        public async Task<IEnumerable<string>> AddUserToCreateRole(User user)
+``````public async Task<User> UpdateProfile(User user)
         {
-            if (!await _roleManager.RoleExistsAsync("Creator"))
-            {
-                await _roleManager.CreateAsync(new IdentityRole("Creator"));
-            }
-            var some = await _userManger.AddToRoleAsync(user, "Creator");
-            var roles = await _userManger.GetRolesAsync(user);
-            return roles;
-        }
-
-        public async Task<User> DeleteUser(string userId)
-        {
-            var user = await _userManger.FindByIdAsync(userId);
-            if(user == null)
-            {
-                return null;
-            }
-            await _userManger.DeleteAsync(user);
+             await _userManger.UpdateAsync(user);
             return user;
         }
-
-        public async Task<bool> Exist(string userName)
-        {
-            var user = await _userManger.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return  false;
-            }
-            return true;
-        }
-
         public async Task<User> Get(string userId)
         {
             //throw new NotImplementedException();
@@ -76,7 +48,6 @@ namespace Demጽ.Repository.AuthenticationRepository
             }
             return user;
         }
-
         public async Task<IEnumerable<string>> GetUserRoels(User user)
         {
             if (user == null)
@@ -86,8 +57,39 @@ namespace Demጽ.Repository.AuthenticationRepository
             }
             var roles = await _userManger.GetRolesAsync(user);
             return roles.ToList();
-
         }
+        public async Task<bool> Exist(string userName)
+        {
+            var user = await _userManger.FindByNameAsync(userName);
+            if (user == null)
+            {
+                return  false;
+            }
+            return true;
+        }
+
+        //public async Task<User> Get(string userId)
+        //{
+        //    //throw new NotImplementedException();
+        //    var user = await _userManger.FindByIdAsync(userId);
+        //    if(user == null)
+        //    {
+        //        return null;
+        //    }
+        //    return user;
+        //}
+
+        //public async Task<IEnumerable<string>> GetUserRoels(User user)
+        //{
+        //    if (user == null)
+        //    {
+        //        return null;
+
+        //    }
+        //    var roles = await _userManger.GetRolesAsync(user);
+        //    return roles.ToList();
+
+        //}
         
 
         public async Task<LoginReturn> Login(LoginDto userCred)
@@ -200,11 +202,11 @@ namespace Demጽ.Repository.AuthenticationRepository
             return user;
         }
 
-        public async  Task<User> UpdateProfile(User user)
-        {
-             await _userManger.UpdateAsync(user);
-            return user;
-        }
+        //public async  Task<User> UpdateProfile(User user)
+        //{
+        //     await _userManger.UpdateAsync(user);
+        //    return user;
+        //}
 
     }
 }

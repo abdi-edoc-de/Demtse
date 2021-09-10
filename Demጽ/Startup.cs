@@ -22,6 +22,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Demጽ.Profiles;
+using Demጽ.Repository.RecentlyPlayedRespositories;
+using Demጽ.Repository.SubscribeReopsitories;
 
 namespace Demጽ
 {
@@ -43,6 +46,8 @@ namespace Demጽ
             services.AddScoped<IWraperRepository, WraperRepository>();
             services.AddScoped<IAudioRepository, AudioRepository>();
             services.AddScoped<IChannelRepository, ChannelRepository>();
+            services.AddScoped<IRecentlyPlayedRepository, RecentlyPlayedRepository>();
+            services.AddScoped<ISubscribeRepository, SubscribeRepository>();
             services.AddControllers();
             services.AddDbContext<AppDbContext>(options => 
                                     options
@@ -104,6 +109,7 @@ namespace Demጽ
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Demo API");
                 });
+                
             }
              app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
