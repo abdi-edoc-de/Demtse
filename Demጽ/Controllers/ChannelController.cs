@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Demጽ.Entities;
 using Demጽ.Models;
+using Demጽ.Models.Channels;
 using Demጽ.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Demጽ.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Users/{UserId}/[controller]")]
     public class ChannelController : ControllerBase
     {
         private readonly IWraperRepository _repository;
@@ -26,7 +27,7 @@ namespace Demጽ.Controllers
         // GET api/channel/{id}
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetChannel(String id)
+        public async Task<ActionResult> GetChannel(Guid UserId, String id)
         {
             Channel channel = null;
             try
@@ -41,7 +42,7 @@ namespace Demጽ.Controllers
             if (channel == null)
                 return NotFound();
 
-            return Ok(ToDTO(channel));
+            return Ok(ConvertToChannelDto(channel, UserId.ToString()));
         }
 
         // POST api/channel
@@ -86,14 +87,14 @@ namespace Demጽ.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(ToDTO(createdChannel));
+            return Ok(ConvertToChannelDto(createdChannel, createdChannel.UserId));
         }
 
         // PUT api/channel/{id}
         [Authorize]
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> UpdateChannel(String id, IFormFile file, IFormCollection formCollection)
+        public async Task<ActionResult> UpdateChannel(Guid UserId,String id, IFormFile file, IFormCollection formCollection)
         {
 
             Channel channelFromDb = await _repository.ChannelRepository.Get(id);
@@ -133,14 +134,14 @@ namespace Demጽ.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            return Ok(ToDTO(updatedChannel));
+            return Ok(ConvertToChannelDto(updatedChannel, UserId.ToString()));
 
         }
 
         //Get api/channel/search/{searchString}
         [Authorize]
         [HttpGet("search/{searchString}")]
-        public async Task<ActionResult> SearchChannel(String searchString)
+        public async Task<ActionResult> SearchChannel(Guid UserId, String searchString)
         {
             IEnumerable<Channel> channelsFromDb = null;
             try
@@ -156,26 +157,25 @@ namespace Demጽ.Controllers
             {
                 return NotFound();
             }
-            return Ok(ToDTOs(channelsFromDb));
+            return Ok(ToDTOs(channelsFromDb, UserId.ToString()));
         }
 
-        // helper methods
-        private ChannelDTO ToDTO(Channel channel)
+        public static ChannelDto ConvertToChannelDto(Channel channel, String userId)
         {
-            return new ChannelDTO
+            return new ChannelDto
             {
                 Id = channel.Id,
                 Name = channel.Name,
+                Url = channel.ProfilePicture,
                 Description = channel.Description,
-                OwnerId = "channel.Owner.Id",
-                ProfilePicture = channel.ProfilePicture,
-                SubscribersNumber = "100" // TODO : read the data base and return number of subscribers
+                Subscribers = channel.Subscribtion.Count(),
+                Podcasts = channel.Audios.ToList().ConvertAll(audio => AudioController.ConvertToAudioDto(audio, userId)),
             };
         }
 
-        private IEnumerable<ChannelDTO> ToDTOs(IEnumerable<Channel> channels)
+        private IEnumerable<ChannelDto> ToDTOs(IEnumerable<Channel> channels, String userId)
         {
-            return channels.Select<Channel, ChannelDTO>(channel => { return ToDTO(channel); });
+            return channels.Select<Channel, ChannelDto>(channel => { return ConvertToChannelDto(channel, userId); });
         }
     }
 }

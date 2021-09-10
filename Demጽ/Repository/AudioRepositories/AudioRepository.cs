@@ -71,5 +71,10 @@ namespace Demጽ.Repository.AdudioRepositories
             await _appDbContext.SaveChangesAsync();
             return true;
         }
+
+        public async Task<List<Audio>> TextSearchPodcasts(String query)
+        {
+            return _appDbContext.Audios.Where(audio => audio.Title.Contains(query)).ToList();
+        }
     }
 }

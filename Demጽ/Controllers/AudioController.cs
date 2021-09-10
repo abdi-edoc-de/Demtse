@@ -82,7 +82,7 @@ namespace Demጽ.Controllers
             // TODO: Add image
 
             await _AudioRepository.AddAudio(audio);
-            AudioDto audioDto = ConvertToDto(audio, UserId.ToString());
+            AudioDto audioDto = ConvertToAudioDto(audio, UserId.ToString());
             // AudioDto audioToReturn = _mapper.Map<AudioDto>(audio);
             return Ok(audioDto);
         }
@@ -121,14 +121,14 @@ namespace Demጽ.Controllers
         public async Task<ActionResult<List<AudioDto>>> GetSubscribedAudios(Guid UserId)
         {
             List<Audio> result = await _AudioRepository.GetSubscribedAudios(UserId);
-            return Ok(result.ConvertAll(audio => ConvertToDto(audio, UserId.ToString())));
+            return Ok(result.ConvertAll(audio => ConvertToAudioDto(audio, UserId.ToString())));
         }
 
         [HttpGet("Trending")]
         public async Task<ActionResult<List<AudioDto>>> GetTrendingAudios(Guid UserId)
         {
             List<Audio> result = await _AudioRepository.GetTrendingAudios();
-            return Ok(result.ConvertAll(audio => ConvertToDto(audio, UserId.ToString())));
+            return Ok(result.ConvertAll(audio => ConvertToAudioDto(audio, UserId.ToString())));
         }
 
         [HttpPost("{AudioId}/Played")]
@@ -149,7 +149,7 @@ namespace Demጽ.Controllers
         {
             var results =  await _RecentlyPlayedRepository.GetAll();
             
-            return Ok(results.ConvertAll(result => ConvertToDto(result.Audio, UserId.ToString())));
+            return Ok(results.ConvertAll(result => ConvertToAudioDto(result.Audio, UserId.ToString())));
         }
 
         [HttpDelete("{AudioId}")]
@@ -176,24 +176,35 @@ namespace Demጽ.Controllers
             {
                 return NotFound();
             }
-            AudioDto audioDto = ConvertToDto(audio, UserId.ToString());
+            AudioDto audioDto = ConvertToAudioDto(audio, UserId.ToString());
             Console.WriteLine(audioDto.Url);
             return Ok(audioDto);
         }
 
-        private AudioDto ConvertToDto(Audio audio, String UserId)
+        static public AudioDto ConvertToAudioDto(Audio audio, String UserId)
         {
             return new AudioDto
             {
                 Name = audio.Title,
                 NumberOfListeners = audio.NumberOfListeners,
                 ChannelName = audio.Channel.Name,
-                Url = "http://192.168.43.110:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
+                Url = "http://192.168.1.7:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
                 Description = audio.Description,
                 Id = Guid.Parse(audio.Id),
                 ImageUrl = audio.Channel.ProfilePicture,
             };
         }
+
+        [HttpGet("search/{searchString}")]
+        public async Task<ActionResult<List<AudioDto>>> SearchPodcasts(Guid UserId, String searchString)
+        {
+            return Ok(
+                (await _AudioRepository.TextSearchPodcasts(searchString))
+                    .ConvertAll(audio => ConvertToAudioDto(audio, UserId.ToString())
+                ));
+        }
+
+
 
     }
 }

@@ -17,5 +17,7 @@ namespace Demጽ.Repository.AdudioRepositories
         public Task<List<Audio>> GetSubscribedAudios(Guid userId);
         public Task<List<Audio>> GetTrendingAudios();
         public Task<Audio> DeleteResource(Guid resourceId);
+
+        public Task<List<Audio>> TextSearchPodcasts(String query);
     }
 }
