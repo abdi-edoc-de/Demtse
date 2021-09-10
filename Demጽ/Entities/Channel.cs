@@ -24,6 +24,8 @@ namespace Demጽ.Entities
         public virtual User Owner { get; set; }
         [Required]
         public String UserId { get; set; }
+        //[Required]
+        //public String PictureName { get; set; }
         public virtual ICollection<Audio> Audios { get; set; } = new List<Audio>();
         public virtual ICollection<Subscribe> Subscribtion { get; set; } = new List<Subscribe>();
 

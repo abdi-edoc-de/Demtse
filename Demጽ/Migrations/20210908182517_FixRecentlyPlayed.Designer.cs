@@ -23,7 +23,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.Audio", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ChaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
@@ -49,7 +49,7 @@ namespace Demጽ.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("ChannelId");
 
@@ -58,7 +58,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.Channel", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ChaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
@@ -79,7 +79,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("UserId");
 
@@ -88,7 +88,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.RecentlyPlayed", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ChaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
@@ -103,7 +103,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("AudioId");
 
@@ -118,7 +118,7 @@ namespace Demጽ.Migrations
                     b.Property<string>("ChannelId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Id")
+                    b.Property<string>("ChaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
@@ -139,7 +139,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ChaId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
@@ -201,7 +201,7 @@ namespace Demጽ.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -216,7 +216,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ChaId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -231,7 +231,7 @@ namespace Demጽ.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -243,7 +243,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ChaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -258,7 +258,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("RoleId");
 
@@ -267,7 +267,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ChaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -282,7 +282,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChaId");
 
                     b.HasIndex("UserId");
 

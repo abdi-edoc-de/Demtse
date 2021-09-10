@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demጽ.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210909052630_AddUploadDateAudio")]
-    partial class AddUploadDateAudio
+    [Migration("20210910071839_bura_dbod")]
+    partial class bura_dbod
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.Audio", b =>
                 {
-                    b.Property<string>("ChaId")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
@@ -52,7 +52,7 @@ namespace Demጽ.Migrations
                     b.Property<DateTime>("UploadedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ChannelId");
 
@@ -61,7 +61,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.Channel", b =>
                 {
-                    b.Property<string>("ChaId")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
@@ -82,7 +82,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -91,7 +91,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Demጽ.Entities.RecentlyPlayed", b =>
                 {
-                    b.Property<string>("ChaId")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
@@ -106,7 +106,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AudioId");
 
@@ -121,28 +121,23 @@ namespace Demጽ.Migrations
                     b.Property<string>("ChannelId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ChaId")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Nofication")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "ChannelId");
 
                     b.HasIndex("ChannelId");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Subscribtions");
                 });
 
             modelBuilder.Entity("Demጽ.Entities.User", b =>
                 {
-                    b.Property<string>("ChaId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
@@ -190,6 +185,10 @@ namespace Demጽ.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfilePicName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -204,7 +203,7 @@ namespace Demጽ.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -219,7 +218,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<string>("ChaId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -234,7 +233,7 @@ namespace Demጽ.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -246,7 +245,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("ChaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -261,7 +260,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
@@ -270,7 +269,7 @@ namespace Demጽ.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.Property<int>("ChaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -285,7 +284,7 @@ namespace Demጽ.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ChaId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -383,7 +382,9 @@ namespace Demጽ.Migrations
 
                     b.HasOne("Demጽ.Entities.User", "User")
                         .WithMany("Subscribtion")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -45,7 +45,9 @@ namespace Demጽ.Controllers
 
             }
             User user = _mapper.Map<User>(model);
-            user.ProfilePicName = "profile.jpg";
+            user.ProfilePicName = "placeholder.jpg";
+
+
             user.SecurityStamp = Guid.NewGuid().ToString();
 
 
@@ -98,7 +100,7 @@ namespace Demጽ.Controllers
         }
 
         [HttpPut]
-        [Route("update /profile/{userId}")]
+        [Route("update/profile/{userId}")]
         [Consumes("multipart/form-data")]
 
         public async Task<IActionResult> UpdateUserProfile(IFormFile file, String userId)
@@ -129,7 +131,7 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet]
-        [Route("update /profile/{userId}")]
+        [Route("update/profile/{userId}")]
         public async Task<ActionResult> GetProfile(String userId)
         {
             var user = await _repositry.AuthenticationRepository.Get(userId);

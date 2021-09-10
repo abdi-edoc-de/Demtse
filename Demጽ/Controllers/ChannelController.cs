@@ -25,7 +25,7 @@ namespace Demጽ.Controllers
         }
 
         // GET api/channel/{id}
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult> GetChannel(Guid UserId, String id)
         {
@@ -46,7 +46,7 @@ namespace Demጽ.Controllers
         }
 
         // POST api/channel
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult> PostChannel(IFormFile file, IFormCollection formCollection)
@@ -59,8 +59,9 @@ namespace Demጽ.Controllers
             Channel channel = new Channel
             {
                 Name = formCollection["name"].ToString(),
+          
                 Description = formCollection["description"].ToString(),
-                ProfilePicture = Path.Combine(Path.Join("Static", "Resources", "Images", Path.GetRandomFileName())),
+                ProfilePicture ="Static\\Resources\\Images\\Profiles\\rbhndnh0.3g3",
                 UserId = formCollection["ownerId"].ToString()
             };
 
@@ -78,20 +79,14 @@ namespace Demጽ.Controllers
 
             Channel createdChannel = null;
 
-            try
-            {
-                createdChannel = await _repository.ChannelRepository.Add(channel);
-            }
-            catch (System.Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
 
+            createdChannel = await _repository.ChannelRepository.Add(channel);
+    
             return Ok(ConvertToChannelDto(createdChannel, createdChannel.UserId));
         }
 
         // PUT api/channel/{id}
-        [Authorize]
+        //[Authorize]
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult> UpdateChannel(Guid UserId,String id, IFormFile file, IFormCollection formCollection)
@@ -139,7 +134,7 @@ namespace Demጽ.Controllers
         }
 
         //Get api/channel/search/{searchString}
-        [Authorize]
+        //[Authorize]
         [HttpGet("search/{searchString}")]
         public async Task<ActionResult> SearchChannel(Guid UserId, String searchString)
         {
@@ -159,7 +154,8 @@ namespace Demጽ.Controllers
             }
             return Ok(ToDTOs(channelsFromDb, UserId.ToString()));
         }
-        [Authorize]
+
+        //[Authorize]
         [HttpGet("yourchannel")]
         public async Task<ActionResult> yourChannels(Guid UserId){
             String userId = UserId.ToString();
@@ -186,12 +182,28 @@ namespace Demጽ.Controllers
             {
                 Id = channel.Id,
                 Name = channel.Name,
-                Url = channel.ProfilePicture,
+                Url = $"api/Users/{userId}/Channel/profile/{channel.Id}",
                 Description = channel.Description,
                 Subscribers = channel.Subscribtion.Count(),
                 Podcasts = channel.Audios.ToList().ConvertAll(audio => AudioController.ConvertToAudioDto(audio, userId)),
             };
         }
+        [HttpGet]
+        [Route("/profile/{channelId}")]
+        public async Task<ActionResult> GetProfile(String userId,String channelId)
+        {
+            var channel = await _repository.ChannelRepository.Get(channelId);
+            if (channel == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "400", Message = "Channel dose not exist" });
+
+            }
+            var image = new FileStream(channel.ProfilePicture, FileMode.Open, FileAccess.Read);
+            var response = File(image, "application/octet-stream", "placeholder.jpg");
+            return response;
+        }
+
 
         private IEnumerable<ChannelDto> ToDTOs(IEnumerable<Channel> channels, String userId)
         {

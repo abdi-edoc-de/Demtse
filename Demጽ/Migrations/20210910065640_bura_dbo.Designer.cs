@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Demጽ.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210909052630_AddUploadDateAudio")]
-    partial class AddUploadDateAudio
+    [Migration("20210910065640_bura_dbo")]
+    partial class bura_dbo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -128,14 +128,9 @@ namespace Demጽ.Migrations
                     b.Property<bool>("Nofication")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("UserId", "ChannelId");
 
                     b.HasIndex("ChannelId");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Subscribtions");
                 });
@@ -189,6 +184,10 @@ namespace Demጽ.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ProfilePicName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePicture")
                         .IsRequired()
@@ -383,7 +382,9 @@ namespace Demጽ.Migrations
 
                     b.HasOne("Demጽ.Entities.User", "User")
                         .WithMany("Subscribtion")
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
