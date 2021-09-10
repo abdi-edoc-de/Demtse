@@ -22,7 +22,6 @@ namespace Demጽ.Controllers
     {
         private readonly string pathForFiles = Path.Join("Static", "Resources");
         private readonly IAudioRepository _AudioRepository;
-        private readonly IMapper _mapper;
         private readonly IRecentlyPlayedRepository _RecentlyPlayedRepository;
         private readonly IChannelRepository _ChannelRepository;
 

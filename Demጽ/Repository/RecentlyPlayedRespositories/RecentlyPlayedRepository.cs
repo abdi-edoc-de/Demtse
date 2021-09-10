@@ -18,10 +18,10 @@ namespace Demጽ.Repository.RecentlyPlayedRespositories
         public async Task<List<RecentlyPlayed>> GetRecents(String userId)
         {
             //TODO: Fix the sorting
-            return _appDbContext.RecentlyPlayeds
+            return await _appDbContext.RecentlyPlayeds
                 .Where(play => play.UserId == userId)
                 .OrderByDescending(play => play.ListenTime.Ticks)
-                .ToList();
+                .ToListAsync();
         }
     }
 }
