@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Demጽ.Models.Users
 {
-    public class UserDto
+    public class UserUpdateDto
     {
-        public String Id { get; set; }
+        [Required]
+        public String Password { get; set; }
+        [Required]
         public String Email { get; set; }
+        [Required]
         public String UserName { get; set; }
-        public String FirstName { get; set; }
-        public String LastName { get; set; }
-        public String ProfilePicture { get; set; }
-        public IEnumerable<String> Roles { get; set; }
+      
 
     }
 }

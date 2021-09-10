@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\test.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -29,7 +33,11 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Static\Resources\Audios\" />
-    <Folder Include="Static\Resources\Images\" />
+    <Folder Include="Static\Resources\Images\Profiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\test.jpg" />
   </ItemGroup>
 
 

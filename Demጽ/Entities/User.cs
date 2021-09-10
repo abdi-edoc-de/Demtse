@@ -20,6 +20,8 @@ namespace Demጽ.Entities
         public virtual ICollection<Subscribe> Subscribtion { get; set; } 
             = new List<Subscribe>();
         public virtual List<Channel> Channels { get; set; } = new List<Channel>();
+        [Required]
+        public String ProfilePicName { get; set; } 
 
     }
 }

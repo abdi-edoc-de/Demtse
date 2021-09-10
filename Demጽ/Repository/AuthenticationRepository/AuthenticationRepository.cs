@@ -34,6 +34,28 @@ namespace Demጽ.Repository.AuthenticationRepository
             this._configuration = configuration;
         }
 
+        public async Task<IEnumerable<string>> AddUserToCreateRole(User user)
+        {
+            if (!await _roleManager.RoleExistsAsync("Creator"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Creator"));
+            }
+            var some = await _userManger.AddToRoleAsync(user, "Creator");
+            var roles = await _userManger.GetRolesAsync(user);
+            return roles;
+        }
+
+        public async Task<User> DeleteUser(string userId)
+        {
+            var user = await _userManger.FindByIdAsync(userId);
+            if(user == null)
+            {
+                return null;
+            }
+            await _userManger.DeleteAsync(user);
+            return user;
+        }
+
         public async Task<bool> Exist(string userName)
         {
             var user = await _userManger.FindByNameAsync(userName);
@@ -43,6 +65,30 @@ namespace Demጽ.Repository.AuthenticationRepository
             }
             return true;
         }
+
+        public async Task<User> Get(string userId)
+        {
+            //throw new NotImplementedException();
+            var user = await _userManger.FindByIdAsync(userId);
+            if(user == null)
+            {
+                return null;
+            }
+            return user;
+        }
+
+        public async Task<IEnumerable<string>> GetUserRoels(User user)
+        {
+            if (user == null)
+            {
+                return null;
+
+            }
+            var roles = await _userManger.GetRolesAsync(user);
+            return roles.ToList();
+
+        }
+        
 
         public async Task<LoginReturn> Login(LoginDto userCred)
 
@@ -106,9 +152,59 @@ namespace Demጽ.Repository.AuthenticationRepository
             return user;
         }
 
-        public Task<User> RegisterAdmin(User user , String Password)
+        public Task<User> RegisterAdmin(User user, string Password)
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<string>> RemoveUserFromCreateRole(String userId)
+        {
+            var user = await _userManger.FindByIdAsync(userId);
+            if(user == null)
+            {
+                return null;
+
+            }
+            var roles = await _userManger.GetRolesAsync(user);
+            var roleToRemove = roles.Where(r => r.Equals("Creator",StringComparison.InvariantCultureIgnoreCase
+                ));
+            if(roleToRemove == null)
+            {
+                return null;
+            }
+            var result = await _userManger.RemoveFromRolesAsync(user, roleToRemove);
+
+            return await _userManger.GetRolesAsync(user);
+        }
+
+        public async Task<User> Update(UserUpdateDto userUpdate,String userId)
+        {
+            var user = await  _userManger.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return null;
+            }
+            var userCheck = await _userManger.FindByNameAsync(userUpdate.UserName);
+            if(userCheck != null && userCheck.Id != userId)
+            {
+                return null;
+            }
+            user.Email = userUpdate.Email;
+            user.UserName = userUpdate.UserName;
+
+            await _userManger.UpdateAsync(user);
+
+            var token = await _userManger.GeneratePasswordResetTokenAsync(user);
+            var toke = await _userManger.ResetPasswordAsync(user, token, userUpdate.Password);
+
+            return user;
+        }
+
+        public async  Task<User> UpdateProfile(User user)
+        {
+             await _userManger.UpdateAsync(user);
+            return user;
+        }
+
     }
 }

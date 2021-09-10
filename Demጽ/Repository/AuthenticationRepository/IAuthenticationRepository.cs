@@ -10,10 +10,22 @@ namespace Demጽ.Repository.AuthenticationRepository
     public interface IAuthenticationRepository
     {
         Task<User> Register(User user,string Password);
-        Task<User> RegisterAdmin(User user , string Password);
-
+        Task<User> RegisterAdmin(User user , string Password)
         Task<LoginReturn> Login(LoginDto userCred);
         Task<bool> Exist(string userName);
-        
+
+
+
+
+
+        Task<User> Update(UserUpdateDto userUpdate,String userId);
+        Task<User> Get(String userId);
+        Task<User> UpdateProfile( User user);
+        Task<IEnumerable<String>> GetUserRoels(User user);
+
+        Task<IEnumerable<String>> AddUserToCreateRole(User user);
+
+        Task<IEnumerable<String>> RemoveUserFromCreateRole(String userId);
+        Task<User> DeleteUser(String userId);
     }
 }

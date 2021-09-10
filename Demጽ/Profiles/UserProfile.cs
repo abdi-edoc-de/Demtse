@@ -15,6 +15,8 @@ namespace Demጽ.Profiles
         {
             CreateMap<UserCreationDto, User>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UserUpdateDto>();
+
         }
     }
 }
