@@ -133,7 +133,7 @@ namespace Demጽ.Controllers
         }
 
         [HttpPost("{AudioId}/Played")]
-        public async Task<ActionResult<RecentlyPlayed>> PostRecentlyPlayed(Guid UserId, Guid AudioId)
+        public async Task<ActionResult> PostRecentlyPlayed(Guid UserId, Guid AudioId)
         {
             var result = await _RecentlyPlayedRepository.Add(new RecentlyPlayed
             {
@@ -141,8 +141,9 @@ namespace Demጽ.Controllers
                 UserId = UserId.ToString(),
                 ListenTime = DateTime.Now
             });
-            await _AudioRepository.IncrementListeners(result.Audio);
-            return Accepted(result);
+
+            await _AudioRepository.IncrementListeners(AudioId);
+            return Accepted();
         }
 
         [Authorize]
