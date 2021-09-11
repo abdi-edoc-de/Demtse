@@ -85,6 +85,8 @@ namespace Demጽ.Controllers
             userCred.User.Roles = userRoles;
             return Ok(userCred);
         }
+
+        // api route for updating user information by padding its userId
         [HttpPut]
         [Route("update /{userId}")]
         public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto model, String userId)
@@ -99,6 +101,7 @@ namespace Demጽ.Controllers
             return Ok(userToReturn);
         }
 
+        // api route for updating the profile of a user by passing its userId
         [HttpPut]
         [Route("update/profile/{userId}")]
         [Consumes("multipart/form-data")]
@@ -130,6 +133,8 @@ namespace Demጽ.Controllers
             return Ok(_mapper.Map<UserDto>(user));
         }
 
+
+        // api route for getting the profile of a given userId
         [HttpGet]
         [Route("update/profile/{userId}")]
 
@@ -147,6 +152,7 @@ namespace Demጽ.Controllers
             return response;
         }
 
+        // api route for creating a role for the user
         [HttpPost()]
         [Route("user/{userId}/role")]
         //[Authorize(Roles = "User")]
@@ -162,7 +168,7 @@ namespace Demጽ.Controllers
             var roles = await _repositry.AuthenticationRepository.AddUserToCreateRole(user);
             return Ok(roles);
         }
-
+ 
         [HttpPost()]
         [Route("user/{userId}/role/delete")]
         //[Authorize(Roles = "User")]
@@ -180,6 +186,8 @@ namespace Demጽ.Controllers
             return Ok(roles);
 
         }
+
+        // api route for deleting a specific user by passin its userId
         [HttpDelete()]
         [Route("user/{userId}")]
         //[Authorize(Roles = "User")]
