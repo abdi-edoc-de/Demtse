@@ -181,6 +181,8 @@ namespace Demጽ.Controllers
             return Ok(roles);
 
         }
+
+        // api route for deleting a specific user by passin its userId
         [HttpDelete()]
         [Route("user/{userId}")]
         public async Task<ActionResult> DeleteUser(String userId)
