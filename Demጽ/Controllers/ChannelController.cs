@@ -195,7 +195,7 @@ namespace Demጽ.Controllers
                 Podcasts = channel.Audios.ToList().ConvertAll(audio => AudioController.ConvertToAudioDto(audio, userId)),
             };
         }
-
+        // api for getting a specific channel by passing channelId
         [HttpGet]
         [Route("/profile/{channelId}")]
         public async Task<ActionResult> GetProfile(String userId,String channelId)
@@ -211,7 +211,6 @@ namespace Demጽ.Controllers
             var response = File(image, "application/octet-stream", "placeholder.jpg");
             return response;
         }
-
 
         private IEnumerable<ChannelDto> ToDTOs(IEnumerable<Channel> channels, String userId)
         {
