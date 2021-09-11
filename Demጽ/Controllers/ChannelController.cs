@@ -26,6 +26,8 @@ namespace Demጽ.Controllers
 
         //[Authorize]
         [HttpGet]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult<ChannelDto>> GetListOfChannels(Guid UserId)
         {
             return Ok((await _repository.ChannelRepository.GetAll()).ConvertAll(channel => ConvertToChannelDto(channel, UserId.ToString())));
@@ -34,6 +36,7 @@ namespace Demጽ.Controllers
         // GET api/channel/{id}
         //[Authorize]
         [HttpGet("{id}")]
+        //[Authorize(Roles = "User")]
         public async Task<ActionResult> GetChannel(Guid UserId, String id)
         {
             Channel channel = null;
@@ -56,6 +59,7 @@ namespace Demጽ.Controllers
         //[Authorize]
         [HttpPost]
         [Consumes("multipart/form-data")]
+        //[Authorize(Roles = "User,Creator")]
         public async Task<ActionResult> PostChannel(IFormCollection formCollection)
         {
             if (formCollection["name"].ToString().Equals("") || formCollection["description"].ToString().Equals("") || formCollection["ownerId"].ToString().Equals(""))
@@ -96,6 +100,8 @@ namespace Demጽ.Controllers
         //[Authorize]
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
+        //[Authorize(Roles = "User,Creator")]
+
         public async Task<ActionResult> UpdateChannel(Guid UserId,String id, IFormCollection formCollection)
         {
 
@@ -143,6 +149,8 @@ namespace Demጽ.Controllers
         //Get api/channel/search/{searchString}
         //[Authorize]
         [HttpGet("search/{searchString}")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult> SearchChannel(Guid UserId, String searchString)
         {
             IEnumerable<Channel> channelsFromDb = null;
@@ -164,6 +172,8 @@ namespace Demጽ.Controllers
 
         //[Authorize]
         [HttpGet("yourchannel")]
+        //[Authorize(Roles = "User,Creator")]
+
         public async Task<ActionResult> yourChannels(Guid UserId){
             String userId = UserId.ToString();
             IEnumerable<Channel> channelsFromDb = null;

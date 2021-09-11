@@ -8,6 +8,7 @@ using Demጽ.Repository.SubscribeReopsitories;
 using Demጽ.Models.Channels;
 using Demጽ.Entities;
 using Demጽ.Models.Audios;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Demጽ.Controllers
 {
@@ -24,6 +25,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpPut("{ChannelId}")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult> PostSubscription(Guid UserId, Guid ChannelId)
         {
             await _SubscriptionRepository.Add(new Entities.Subscribe
@@ -36,6 +39,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpDelete("{ChannelId}")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult> DeleteSubscription(Guid UserId, Guid ChannelId)
         {
             await _SubscriptionRepository.DeleteSubscription(UserId.ToString(), ChannelId.ToString());
@@ -43,6 +48,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult<List<ChannelDto>>> GetSubscribedChannels(Guid UserId)
         {
             return (await _SubscriptionRepository.GetSubscribedChannels(UserId.ToString()))
@@ -50,6 +57,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet("{ChannelId}")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult> GetSubscription(Guid UserId, Guid ChannelId)
         {
             var result = await _SubscriptionRepository.GetSubscribe(UserId.ToString(), ChannelId.ToString());

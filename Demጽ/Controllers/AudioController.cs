@@ -33,6 +33,7 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet]
+        //[Authorize(Roles = "User")]
         public async Task<ActionResult<IEnumerable<Audio>>> GetRecentAudios(Guid userId)
         {
             IEnumerable<Audio> audios = await _AudioRepository.GetRecentAudios(userId);
@@ -45,6 +46,7 @@ namespace Demጽ.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
+        //[Authorize(Roles = "User,Creator")]
         public async Task<ActionResult<AudioDto>> PostAudio(Guid UserId, IFormFile audioFile, [FromForm] AudioCreationDto audioCreationDto)
         {
             if (audioFile == null)
@@ -79,6 +81,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpPatch("{AudioId}")]
+        //[Authorize(Roles = "User,Creator")]
+
         public async Task<ActionResult<AudioDto>> EditResource(Guid UserId, Guid AudioId, [FromBody] AudioUpdateDto audioUpdateDto)
         {
             var audio = await _AudioRepository.Get(AudioId.ToString());
@@ -96,6 +100,7 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet("{AudioId}/Download.mp3")]
+        //[Authorize(Roles = "User")]
         public async Task<ActionResult> DownloadResource(Guid AudioId)
         {
             Audio audio = await _AudioRepository.GetAudio(AudioId);
@@ -109,6 +114,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet("Subscribed")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult<List<AudioDto>>> GetSubscribedAudios(Guid UserId)
         {
             List<Audio> result = await _AudioRepository.GetSubscribedAudios(UserId);
@@ -117,6 +124,8 @@ namespace Demጽ.Controllers
 
         [Authorize]
         [HttpGet("Trending")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult<List<AudioDto>>> GetTrendingAudios(Guid UserId)
         {
             List<Audio> result = await _AudioRepository.GetTrendingAudios();
@@ -124,6 +133,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpPost("{AudioId}/Played")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult> PostRecentlyPlayed(Guid UserId, Guid AudioId)
         {
             var result = await _RecentlyPlayedRepository.Add(new RecentlyPlayed
@@ -139,6 +150,8 @@ namespace Demጽ.Controllers
 
         //[Authorize]
         [HttpGet("Recents")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult<List<AudioDto>>> GetRecentlyPlayed(Guid UserId)
         {
             var results =  await _RecentlyPlayedRepository.GetAll();
@@ -147,6 +160,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpDelete("{AudioId}")]
+        //[Authorize(Roles = "User,Creator")]
+
         public async Task<ActionResult> DeleteResource(Guid UserId, Guid AudioId)
         {
             var result = await _AudioRepository.Get(AudioId.ToString());
@@ -164,6 +179,8 @@ namespace Demጽ.Controllers
 
         //[Authorize]
         [HttpGet("{AudioId}")]
+        //[Authorize(Roles = "User")]
+
         public async Task<ActionResult<AudioDto>> GetResource(Guid UserId, Guid AudioId)
         {
             Audio audio = await _AudioRepository.GetAudio(AudioId);
@@ -191,6 +208,8 @@ namespace Demጽ.Controllers
         }
 
         [HttpGet("search/{searchString}")]
+        [Authorize(Roles = "User")]
+
         public async Task<ActionResult<List<AudioDto>>> SearchPodcasts(Guid UserId, String searchString)
         {
             return Ok(

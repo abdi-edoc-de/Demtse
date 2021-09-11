@@ -149,7 +149,7 @@ namespace Demጽ.Controllers
 
         [HttpPost()]
         [Route("user/{userId}/role")]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
 
         public async Task<ActionResult> AddUserToCreateRole(String userId)
         {
@@ -165,7 +165,7 @@ namespace Demጽ.Controllers
 
         [HttpPost()]
         [Route("user/{userId}/role/delete")]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
 
         public async Task<ActionResult> RemoveUserFromCreateRole(String userId)
         {
@@ -182,8 +182,7 @@ namespace Demጽ.Controllers
         }
         [HttpDelete()]
         [Route("user/{userId}")]
-        [Authorize(Roles = "User")]
-
+        //[Authorize(Roles = "User")]
         public async Task<ActionResult> DeleteUser(String userId)
         {
             var user = await _repositry.AuthenticationRepository.DeleteUser(userId);
