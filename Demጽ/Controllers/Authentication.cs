@@ -133,6 +133,8 @@ namespace Demጽ.Controllers
             return Ok(_mapper.Map<UserDto>(user));
         }
 
+
+        // api route for getting the profile of a given userId
         [HttpGet]
         [Route("update/profile/{userId}")]
         public async Task<ActionResult> GetProfile(String userId)
@@ -149,6 +151,7 @@ namespace Demጽ.Controllers
             return response;
         }
 
+        // api route for creating a role for the user
         [HttpPost()]
         [Route("user/{userId}/role")]
         public async Task<ActionResult> AddUserToCreateRole(String userId)
@@ -162,7 +165,7 @@ namespace Demጽ.Controllers
             var roles = await _repositry.AuthenticationRepository.AddUserToCreateRole(user);
             return Ok(roles);
         }
-
+ 
         [HttpPost()]
         [Route("user/{userId}/role/delete")]
         public async Task<ActionResult> RemoveUserFromCreateRole(String userId)
