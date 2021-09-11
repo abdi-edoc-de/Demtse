@@ -183,7 +183,7 @@ namespace Demጽ.Controllers
                 Name = audio.Title,
                 NumberOfListeners = audio.NumberOfListeners,
                 ChannelName = audio.Channel.Name,
-                Url = "http://192.168.1.7:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
+                Url = "http://192.168.0.131:44343/api/Users/" + UserId + "/Audios/" + audio.Id + "/Download.mp3",
                 Description = audio.Description,
                 Id = Guid.Parse(audio.Id),
                 ImageUrl = audio.Channel.ProfilePicture,

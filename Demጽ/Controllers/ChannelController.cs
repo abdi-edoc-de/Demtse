@@ -56,9 +56,9 @@ namespace Demጽ.Controllers
         //[Authorize]
         [HttpPost]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> PostChannel(IFormFile file, IFormCollection formCollection)
+        public async Task<ActionResult> PostChannel(IFormCollection formCollection)
         {
-            if (file == null || formCollection["name"].ToString().Equals("") || formCollection["description"].ToString().Equals("") || formCollection["ownerId"].ToString().Equals(""))
+            if (formCollection["name"].ToString().Equals("") || formCollection["description"].ToString().Equals("") || formCollection["ownerId"].ToString().Equals(""))
             {
                 return BadRequest("Make sure you have String name, File file, String description, String ownerId fields  in the form");
             }
@@ -72,17 +72,17 @@ namespace Demጽ.Controllers
                 UserId = formCollection["ownerId"].ToString()
             };
 
-            try
-            {
-                using (var stream = System.IO.File.Create(channel.ProfilePicture))
-                {
-                    file.CopyTo(stream);
-                }
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            //try
+            //{
+            //    using (var stream = System.IO.File.Create(channel.ProfilePicture))
+            //    {
+            //        file.CopyTo(stream);
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
+            //}
 
             Channel createdChannel = null;
 
@@ -96,7 +96,7 @@ namespace Demጽ.Controllers
         //[Authorize]
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> UpdateChannel(Guid UserId,String id, IFormFile file, IFormCollection formCollection)
+        public async Task<ActionResult> UpdateChannel(Guid UserId,String id, IFormCollection formCollection)
         {
 
             Channel channelFromDb = await _repository.ChannelRepository.Get(id);
@@ -106,20 +106,20 @@ namespace Demጽ.Controllers
                 return NotFound();
             }
 
-            if (file != null)
-            {
-                try
-                {
-                    using (var stream = System.IO.File.OpenWrite(channelFromDb.ProfilePicture))
-                    {
-                        file.CopyTo(stream);
-                    }
-                }
-                catch (Exception)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-            }
+            //if (file != null)
+            //{
+            //    try
+            //    {
+            //        using (var stream = System.IO.File.OpenWrite(channelFromDb.ProfilePicture))
+            //        {
+            //            file.CopyTo(stream);
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //        return StatusCode(StatusCodes.Status500InternalServerError);
+            //    }
+            //}
 
 
             channelFromDb.Name = formCollection["name"].ToString() ?? channelFromDb.Name;
