@@ -19,7 +19,7 @@ namespace Demጽ.Controllers
     [Route("api")]
     public class Authentication : Controller
     {
-        private readonly string pathForFiles = Path.Join("Static", "Resources","Images","Profiles");
+        private readonly string pathForFiles = Path.Join("Static", "Resources", "Images", "Profiles");
         private readonly IWraperRepository _repositry;
         private readonly IMapper _mapper;
         public Authentication(IWraperRepository repository,
@@ -72,7 +72,7 @@ namespace Demጽ.Controllers
         {
 
             var userCred = await _repositry.AuthenticationRepository.Login(model);
-           
+
             if (userCred == null)
             {
                 //ModelState.AddModelError("error", "Email or Password is Incorrect");
@@ -102,7 +102,7 @@ namespace Demጽ.Controllers
         [HttpPut]
         [Route("update/profile/{userId}")]
         [Consumes("multipart/form-data")]
-
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateUserProfile(IFormFile file, String userId)
         {
             if (file == null)
@@ -132,6 +132,7 @@ namespace Demጽ.Controllers
 
         [HttpGet]
         [Route("update/profile/{userId}")]
+
         public async Task<ActionResult> GetProfile(String userId)
         {
             var user = await _repositry.AuthenticationRepository.Get(userId);
@@ -148,6 +149,8 @@ namespace Demጽ.Controllers
 
         [HttpPost()]
         [Route("user/{userId}/role")]
+        [Authorize(Roles = "User")]
+
         public async Task<ActionResult> AddUserToCreateRole(String userId)
         {
             var user = await _repositry.AuthenticationRepository.Get(userId);
@@ -162,6 +165,8 @@ namespace Demጽ.Controllers
 
         [HttpPost()]
         [Route("user/{userId}/role/delete")]
+        [Authorize(Roles = "User")]
+
         public async Task<ActionResult> RemoveUserFromCreateRole(String userId)
         {
             var user = await _repositry.AuthenticationRepository.Get(userId);
@@ -177,6 +182,8 @@ namespace Demጽ.Controllers
         }
         [HttpDelete()]
         [Route("user/{userId}")]
+        [Authorize(Roles = "User")]
+
         public async Task<ActionResult> DeleteUser(String userId)
         {
             var user = await _repositry.AuthenticationRepository.DeleteUser(userId);
