@@ -30,8 +30,7 @@ namespace Demጽ.Controllers
 
 
         }
-
-
+        // api for registering new user
         [HttpPost]
         [Route("register")]
 
@@ -58,13 +57,13 @@ namespace Demጽ.Controllers
                     new Response { Status = "400", Message = "Password IS WEAK" });
             }
 
-
             var userToReturn = _mapper.Map<UserDto>(userFromRepo);
             var userRoles = await _repositry.AuthenticationRepository.GetUserRoels(userFromRepo);
             userToReturn.Roles = userRoles;
             return Ok(userToReturn);
 
         }
+        // api route for login
         [HttpPost]
         [Route("login")]
 
