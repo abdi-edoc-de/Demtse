@@ -85,6 +85,8 @@ namespace Demጽ.Controllers
             userCred.User.Roles = userRoles;
             return Ok(userCred);
         }
+
+        // api route for updating user information by padding its userId
         [HttpPut]
         [Route("update /{userId}")]
         public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDto model, String userId)
@@ -99,6 +101,7 @@ namespace Demጽ.Controllers
             return Ok(userToReturn);
         }
 
+        // api route for updating the profile of a user by passing its userId
         [HttpPut]
         [Route("update/profile/{userId}")]
         [Consumes("multipart/form-data")]
